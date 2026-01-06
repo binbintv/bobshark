@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>BobShark</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
 <style>
 body {
   margin: 0;
@@ -13,17 +13,17 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: Arial, sans-serif;
   color: white;
 }
 
-.container {
+.box {
   text-align: center;
 }
 
 h1 {
-  font-size: 64px;
-  margin: 10px 0;
+  font-size: 56px;
+  margin: 8px 0;
 }
 
 p {
@@ -31,42 +31,41 @@ p {
   opacity: 0.85;
 }
 
-/* cá heo animation */
+/* cá heo */
 .dolphin {
-  width: 160px;
+  width: 180px;
   margin: 0 auto;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-  100% { transform: translateY(0); }
 }
 </style>
 </head>
 
 <body>
-  <div class="container">
+<div class="box">
 
-    <!-- CÁ HEO SVG -->
-    <svg class="dolphin" viewBox="0 0 200 100">
-      <path d="M10 60 
-               Q60 10 120 40
-               Q160 60 190 40
-               Q160 80 120 65
-               Q80 90 60 70
-               Q40 85 30 75
-               Q15 70 10 60 Z"
-            fill="#8fd3f4"/>
-      <circle cx="140" cy="45" r="3" fill="#000"/>
-    </svg>
+  <!-- CÁ HEO -->
+  <svg class="dolphin" viewBox="0 0 300 120">
+    <!-- thân -->
+    <path d="M20 70
+             C80 10, 180 10, 240 60
+             C260 75, 290 65, 280 50
+             C270 40, 250 45, 240 50
+             C210 90, 120 100, 60 85
+             C40 80, 25 75, 20 70 Z"
+          fill="#9ad9f0"/>
 
-    <!-- TÊN -->
-    <h1>BobShark</h1>
-    <p>“Đồng hành cùng Bob khai phá tương lai”</p>
+    <!-- vây -->
+    <path d="M120 70
+             C100 95, 130 100, 150 85 Z"
+          fill="#7fc6e0"/>
 
-  </div>
+    <!-- mắt -->
+    <circle cx="190" cy="50" r="4" fill="#000"/>
+  </svg>
+
+  <!-- TÊN -->
+  <h1>BobShark</h1>
+  <p>“Đồng hành cùng Bob khai phá tương lai”</p>
+
+</div>
 </body>
 </html>
-
