@@ -284,8 +284,28 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 function showRegister(){
-    document.getElementById('intro').style.display='none';
+    document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
+}
+
+async function loadApp(){
+    const user = auth.currentUser;
+    if(!user) return;
+
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('authPage').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+
+    document.getElementById('welcome').innerText = `Xin chào ${user.email} 👋`;
+    document.getElementById('today').innerText = `📅 ${new Date().toLocaleDateString('vi-VN')}`;
+    document.getElementById('stars').innerText = `⭐ Đã đăng nhập thành công`;
+    document.getElementById("footer").style.display = "block";
+
+    // ADMIN
+    if(user.email === "nguyennhatnem2009@gmail.com"){
+        document.getElementById("adminBadge").style.display = "block";
+    }
 }
 function showAuth(id, btn){
     document.querySelectorAll('.auth-content').forEach(x => x.classList.remove('active-auth'));
@@ -475,28 +495,26 @@ async function sendResetEmail(){
 
 }
 window.onload = () => {
-
     auth.onAuthStateChanged(user => {
-
         if(user){
             loadApp();
-        }else{
-            document.getElementById('intro').style.display='block';
+        } else {
+            // Hiển thị intro khi chưa đăng nhập
+            document.getElementById('intro').style.display = 'block';
             document.getElementById('authPage').classList.add('hidden');
             document.getElementById('app').classList.add('hidden');
         }
-
     });
 
-    document.getElementById("introVideo").onended = function(){
-
-    document.getElementById("heroContent").style.display = "block";
-
-    document.getElementById("footer").style.display = "block";
-
-  };
-
+    // Video intro kết thúc thì hiện nút
+    const video = document.getElementById("introVideo");
+    if(video){
+        video.onended = function(){
+            document.getElementById("heroContent").style.display = "block";
+        };
+    }
 };
+
 </script>
 <div id="forgotModal"
 style="
