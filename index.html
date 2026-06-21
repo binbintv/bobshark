@@ -155,7 +155,23 @@ border-radius:16px;
 </div>
 </div>
 
-<script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
+authDomain: "bobshark-fbdfb.firebaseapp.com",
+projectId: "bobshark-fbdfb",
+storageBucket: "bobshark-fbdfb.firebasestorage.app",
+messagingSenderId: "810024180746",
+appId: "1:810024180746:web:4419819dff374b5a04d3f3"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+
 
 function openAdminLogin(){
  document.getElementById('adminModal').style.display='flex';
@@ -212,8 +228,25 @@ function showRegister(){
  document.getElementById('authPage').classList.remove('hidden');
 }
 
-async function register(){
+
+window.register = async function(){
+
  const user={
+  name:regName.value,
+  email:(regUser.value||"user")+"@bobshark.local",
+  career:"Chưa chọn",
+  birth:birth.value,
+  stars:0,
+  registerDate:new Date().toISOString()
+ };
+
+ try{
+   await addDoc(collection(db,"users"), user);
+ }catch(e){
+   console.log(e);
+ }
+
+ const localUser={
   name:regName.value,
   username:regUser.value,
   password:regPass.value,
@@ -222,9 +255,12 @@ async function register(){
   stars:0,
   progress:[false,false,false,false,false,false,false]
  };
- localStorage.setItem('bobUser',JSON.stringify(user));
+
+ localStorage.setItem('bobUser',JSON.stringify(localUser));
+ alert('Đăng ký thành công');
  loadApp();
 }
+
 
 async function loadApp(){
  let user=JSON.parse(localStorage.getItem('bobUser'));
