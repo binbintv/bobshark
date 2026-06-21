@@ -223,7 +223,29 @@ async function loadApp(){
 function logoutUser(){
     auth.signOut().then(() => location.reload());
 }
+function loginAdmin(){
 
+    let username =
+    document.getElementById("adminLoginUser").value;
+
+    let password =
+    document.getElementById("adminLoginPass").value;
+
+    if(
+        username == "admin" &&
+        password == "admin123"
+    ){
+
+        window.location.href =
+        "admin.html";
+
+    }else{
+
+        alert("Sai tài khoản hoặc mật khẩu");
+
+    }
+
+}
 window.onload = () => {
     auth.onAuthStateChanged(user => {
         if(user){
