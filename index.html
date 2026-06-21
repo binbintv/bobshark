@@ -25,6 +25,17 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .tab.active{background:#ffd60a;color:#000}
 .auth-content{display:none}
 .active-auth{display:block}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    opacity: 0.8;
+    margin-top: 30px;
+}
+.footer i {
+    font-style: italic;
+}
 </style>
 </head>
 <body>
@@ -126,6 +137,12 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
     </div>
 </div>
 
+<!-- Footer -->
+<footer class="footer">
+    <p>Liên hệ Admin: <strong>admin@bobshark.vn</strong> | Hotline: 0123 456 789</p>
+    <p><i>Made by Team Siêu Quậy</i></p>
+</footer>
+
 <script>
 const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
 
@@ -171,16 +188,14 @@ async function register(){
         progress: [false,false,false,false,false,false,false]
     };
 
-    // Lưu danh sách cho Admin
     let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
     users.push(user);
     localStorage.setItem('bobUsers', JSON.stringify(users));
 
-    // Lưu user hiện tại
     localStorage.setItem('bobUser', JSON.stringify(user));
 
     alert("✅ Đăng ký thành công! Chào mừng bạn đến với BobShark.");
-    loadApp();   // Tự động vào trang chính
+    loadApp();
 }
 
 function fakeLogin(){
@@ -211,7 +226,6 @@ function loginAdmin(){
     }
 }
 
-// Load trang chính
 async function loadApp(){
     const user = JSON.parse(localStorage.getItem('bobUser'));
     if(!user) return;
@@ -224,23 +238,14 @@ async function loadApp(){
     document.getElementById('welcome').innerText = `Xin chào ${user.name} 👋`;
     document.getElementById('today').innerText = `📅 ${now.toLocaleDateString('vi-VN')}`;
     document.getElementById('stars').innerText = `⭐ Sao: ${user.stars}`;
-
-    renderDays();
-}
-
-async function renderDays(){
-    // Bạn có thể bổ sung đầy đủ hàm này sau
-    console.log("Đang render 7 ngày...");
 }
 
 function openGacha(){ document.getElementById('modal').style.display = 'flex'; }
 function closeGacha(){ document.getElementById('modal').style.display = 'none'; }
 
-// Tự động kiểm tra khi load trang
 window.onload = () => {
-    const user = localStorage.getItem('bobUser');
-    if(user){
-        loadApp();        // Đã có tài khoản → vào thẳng app
+    if(localStorage.getItem('bobUser')){
+        loadApp();
     }
 };
 </script>
