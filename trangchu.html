@@ -160,7 +160,9 @@ box-shadow:0 0 15px rgba(255,0,0,.5);
     <p>Admin: nguyennhatnem2009@gmail.com | Hotline: 0347961309</p>
     <p><i>Design by Cubinzz</i></p>
 </div>
-
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
 <script>
 firebase.initializeApp({
     apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
@@ -187,25 +189,31 @@ auth.onAuthStateChanged(user => {
 
 });
 
+auth.onAuthStateChanged(user => {
+
+    if(user){
+
+        if(user.email === "nguyennhatnem2009@gmail.com"){
+
+            document.getElementById("adminBadge").style.display = "block";
+
+            document.querySelectorAll(".day").forEach((d,index)=>{
+
+                d.classList.remove("locked");
+
+                d.setAttribute(
+                    "onclick",
+                    `completeDay(${index+1})`
+                );
+
+            });
+
+        }
+
+    }
+
+});
 let progress = 0;
-if(user.email === "nguyennhatnem2009@gmail.com"){
-
-    isAdmin = true;
-
-    document.getElementById("adminBadge").style.display = "block";
-
-    document.querySelectorAll(".day").forEach((d,index)=>{
-
-        d.classList.remove("locked");
-
-        d.setAttribute(
-            "onclick",
-            `completeDay(${index+1})`
-        );
-
-    });
-
-}
 function completeDay(day){
 
     const days = document.querySelectorAll(".day");
@@ -237,7 +245,5 @@ function completeDay(day){
 }
 
 </script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 </body>
 </html>
