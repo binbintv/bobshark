@@ -30,22 +30,12 @@ body{
 .hero-box{
     display:inline-block;
     padding:40px 50px;
-
-    background:rgba(0,0,0,.35);
-
+    background:rgba(0,0,0,.45);
     backdrop-filter:blur(12px);
-
-    border:1px solid rgba(255,255,255,.2);
-
-    border-radius:25px;
-
-    box-shadow:
-    0 0 30px rgba(0,0,0,.4),
-    0 0 80px rgba(0,119,255,.2);
-
-   animation:fadeUp 1s ease, glow 2s infinite alternate;
     border:2px solid rgba(255,255,255,.3);
-background:rgba(0,0,0,.45);
+    border-radius:25px;
+    box-shadow:0 0 30px rgba(0,0,0,.4), 0 0 80px rgba(0,119,255,.2);
+    animation:fadeUp 1s ease, glow 2s infinite alternate;
 }
 
 .logo-title{
@@ -68,33 +58,18 @@ background:rgba(0,0,0,.45);
 }
 
 @keyframes fadeUp{
-    from{
-        opacity:0;
-        transform:translateY(40px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 @keyframes glow{
-    from{
-        box-shadow:0 0 20px rgba(255,255,255,.2);
-    }
-
-    to{
-        box-shadow:0 0 40px rgba(0,174,255,.8);
-    }
+    from{box-shadow:0 0 20px rgba(255,255,255,.2);}
+    to{box-shadow:0 0 40px rgba(0,174,255,.8);}
 }
+
 .btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000}
 .card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
-.day{padding:15px;border-radius:10px;text-align:center;background:#2563eb;cursor:pointer}
-.locked{background:#555}
-.done{background:#16a34a}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
 .modal-content{background:#fff;color:#000;padding:20px;border-radius:15px;max-width:500px}
 .tabs{display:flex;gap:10px;margin-bottom:20px}
@@ -103,21 +78,11 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .auth-content{display:none}
 .active-auth{display:block}
 .password-container { position: relative; }
-*{
-    box-sizing:border-box;
-}
-
-.password-container{
-    position:relative;
-    width:100%;
-}
-
 .password-container input{
     width:100%;
     box-sizing:border-box;
     padding-right:45px;
 }
-
 .toggle-password{
     position:absolute;
     right:12px;
@@ -136,54 +101,30 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </style>
 </head>
 <body>
-<div id="adminBadge"
-style="
-display:none;
-position:fixed;
-top:15px;
-right:15px;
-background:#ef4444;
-color:white;
-padding:10px 18px;
-border-radius:20px;
-font-weight:bold;
-z-index:99999;
-">
+
+<!-- Admin Badge -->
+<div id="adminBadge" style="display:none;position:fixed;top:15px;right:15px;background:#ef4444;color:white;padding:10px 18px;border-radius:20px;font-weight:bold;z-index:99999;">
 👑 ADMIN
 </div>
+
+<!-- Intro -->
 <div id="intro">
-    <video id="introVideo"
-autoplay
-muted
-playsinline
-style="
-position:absolute;
-width:100%;
-height:100%;
-object-fit:cover;
-">
-<source src="intro.mp4" type="video/mp4">
-</video>
-   <div class="hero" id="heroContent" style="display:none;">
-
-    <div class="hero-box">
-
-        <h1 class="logo-title">
-            🦈 BOBSHARK
-        </h1>
-
-        <p class="hero-text">
-            Đồng hành cùng Bob khai phá tương lai
-        </p>
-
-        <button class="btn start-btn" onclick="showRegister()">
-            🚀 Bắt đầu hành trình
-        </button>
-
+<video id="introVideo" autoplay muted playsinline style="position:absolute;width:100%;height:100%;object-fit:cover;">
+        <source src="intro.mp4" type="video/mp4">
+    </video>
+    
+    <div class="hero" id="heroContent" style="display:none;">
+        <div class="hero-box">
+            <h1 class="logo-title">🦈 BOBSHARK</h1>
+            <p class="hero-text">Đồng hành cùng Bob khai phá tương lai</p>
+            <button class="btn start-btn" onclick="showRegister()">
+                🚀 Bắt đầu hành trình
+            </button>
+        </div>
     </div>
-
 </div>
 
+<!-- Auth Page -->
 <div id="authPage" class="hidden">
     <div class="card">
         <div class="tabs">
@@ -192,6 +133,7 @@ object-fit:cover;
             <button class="tab" onclick="showAuth('adminLoginBox',this)">Đăng nhập Admin</button>
         </div>
 
+        <!-- Đăng ký -->
         <div id="registerBox" class="auth-content active-auth">
             <div class="card">
                 <h2>Tạo tài khoản</h2>
@@ -206,6 +148,7 @@ object-fit:cover;
             </div>
         </div>
 
+        <!-- Đăng nhập -->
         <div id="loginBox" class="auth-content">
             <div class="card">
                 <h2>🔑 Đăng nhập</h2>
@@ -216,20 +159,19 @@ object-fit:cover;
                 </div>
                 <button class="btn" onclick="loginWithFirebase()">Đăng nhập</button>
                 <p style="margin-top:10px;">
-<a href="#" onclick="openForgotModal()">
-Quên mật khẩu?
-</a>
-</p>
+                    <a href="#" onclick="openForgotModal()">Quên mật khẩu?</a>
+                </p>
             </div>
         </div>
 
+        <!-- Admin Login -->
         <div id="adminLoginBox" class="auth-content">
             <div class="card">
                 <h2>👑 Đăng nhập Admin</h2>
                 <input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
                 <div class="password-container">
                     <input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
-                    <span class="toggle-password" onclick="togglePassword('adminLoginPass', this)">👁️</span>
+<span class="toggle-password" onclick="togglePassword('adminLoginPass', this)">👁️</span>
                 </div>
                 <button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
             </div>
@@ -237,28 +179,25 @@ Quên mật khẩu?
     </div>
 </div>
 
+<!-- Main App -->
 <div id="app" class="hidden">
-
     <div class="card">
-        <button onclick="logoutUser()"
-        style="float:right;background:#ef4444;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;">
-        Đăng xuất
+        <button onclick="logoutUser()" style="float:right;background:#ef4444;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;">
+            Đăng xuất
         </button>
 
         <h1>🦈 BobShark AI</h1>
         <p id="welcome"></p>
         <p id="today"></p>
-       <p id="stars"></p>
+        <p id="stars"></p>
 
-<br>
-
-<button class="btn" onclick="startJourney()">
-🚀 Bắt đầu hành trình
-</button>
-
+        <br>
+        <button class="btn" onclick="startJourney()">
+            🚀 Bắt đầu hành trình
+        </button>
     </div>
-
 </div>
+
 <footer class="footer" id="footer" style="display:none;">
     <p>Admin: nguyennhatnem2009@gmail.com | Hotline: 0347961309</p>
     <p><i>Design by Cubinzz</i></p>
@@ -283,30 +222,13 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// ==================== HÀM HIỂN THỊ ====================
 function showRegister(){
     document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.remove('hidden');
     document.getElementById('app').classList.add('hidden');
 }
 
-async function loadApp(){
-    const user = auth.currentUser;
-    if(!user) return;
-
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('authPage').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-
-    document.getElementById('welcome').innerText = `Xin chào ${user.email} 👋`;
-    document.getElementById('today').innerText = `📅 ${new Date().toLocaleDateString('vi-VN')}`;
-    document.getElementById('stars').innerText = `⭐ Đã đăng nhập thành công`;
-    document.getElementById("footer").style.display = "block";
-
-    // ADMIN
-    if(user.email === "nguyennhatnem2009@gmail.com"){
-        document.getElementById("adminBadge").style.display = "block";
-    }
-}
 function showAuth(id, btn){
     document.querySelectorAll('.auth-content').forEach(x => x.classList.remove('active-auth'));
     document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
@@ -325,7 +247,7 @@ function togglePassword(inputId, icon){
     }
 }
 
-// Đăng ký với Firebase Auth
+// ==================== AUTH FUNCTIONS ====================
 async function registerWithFirebase(){
     const email = document.getElementById('regEmail').value.trim();
     const password = document.getElementById('regPass').value.trim();
@@ -333,6 +255,10 @@ async function registerWithFirebase(){
 
     if(!email || !password){
         alert("Vui lòng nhập Email và Mật khẩu!");
+        return;
+    }
+    if(password.length < 6){
+alert("Mật khẩu phải có ít nhất 6 ký tự!");
         return;
     }
 
@@ -356,7 +282,6 @@ async function registerWithFirebase(){
     }
 }
 
-// Đăng nhập với Firebase Auth
 async function loginWithFirebase(){
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPass').value.trim();
@@ -371,197 +296,9 @@ async function loginWithFirebase(){
 }
 
 async function loadApp(){
-
     const user = auth.currentUser;
     if(!user) return;
 
-    document.getElementById('intro').style.display='none';
+    document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-
-    document.getElementById('welcome').innerText =
-        `Xin chào ${user.email} 👋`;
-
-    document.getElementById('today').innerText =
-        `📅 ${new Date().toLocaleDateString('vi-VN')}`;
-
-    document.getElementById('stars').innerText =
-        `⭐ Đã đăng nhập thành công`;
-    document.getElementById("footer").style.display = "block";
-
-    // ADMIN
-    if(user.email === "nguyennhatnem2009@gmail.com"){
-
-        localStorage.setItem("adminRank","true");
-
-        document.getElementById("adminBadge").style.display = "block";
-
-document.getElementById("adminBadge").innerHTML =
-"👑 ADMIN";
-
-    }else{
-
-        localStorage.removeItem("adminRank");
-
-    }
-}
-function logoutUser(){
-
-    document.getElementById("adminBadge")
-    .style.display = "none";
-
-    auth.signOut().then(() => location.reload());
-
-}
-function loginAdmin(){
-
-    let username =
-    document.getElementById("adminLoginUser").value;
-
-    let password =
-    document.getElementById("adminLoginPass").value;
-
-    if(
-        username == "admin" &&
-        password == "admin123"
-    ){
-
-        window.location.href =
-        "admin.html";
-
-    }else{
-
-        alert("Sai tài khoản hoặc mật khẩu");
-
-    }
-
-}
-function startJourney(){
-    window.location.href = "trangchu.html";
-}
-
-async function forgotPassword(){
-
-    const email =
-    document.getElementById("loginEmail").value.trim();
-
-    if(!email){
-        alert("Vui lòng nhập Email trước.");
-        return;
-    }
-
-    try{
-        await auth.sendPasswordResetEmail(email);
-
-        alert(
-        "📧 Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra hộp thư."
-        );
-
-    }catch(error){
-        alert("Lỗi: " + error.message);
-    }
-}
-function openForgotModal(){
-    document.getElementById("forgotModal").style.display = "flex";
-}
-
-function closeForgotModal(){
-    document.getElementById("forgotModal").style.display = "none";
-}
-
-async function sendResetEmail(){
-
-    const email =
-    document.getElementById("forgotEmail").value.trim();
-
-    if(!email){
-        alert("Vui lòng nhập Email");
-        return;
-    }
-
-    try{
-
-        await auth.sendPasswordResetEmail(email);
-
-        alert("📧 Đã gửi email đặt lại mật khẩu!");
-
-        closeForgotModal();
-
-    }catch(error){
-
-        alert("Lỗi: " + error.message);
-
-    }
-
-}
-window.onload = () => {
-    auth.onAuthStateChanged(user => {
-        if(user){
-            loadApp();
-        } else {
-            // Hiển thị intro khi chưa đăng nhập
-            document.getElementById('intro').style.display = 'block';
-            document.getElementById('authPage').classList.add('hidden');
-            document.getElementById('app').classList.add('hidden');
-        }
-    });
-
-    // Video intro kết thúc thì hiện nút
-    const video = document.getElementById("introVideo");
-    if(video){
-        video.onended = function(){
-            document.getElementById("heroContent").style.display = "block";
-        };
-    }
-};
-
-</script>
-<div id="forgotModal"
-style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.7);
-justify-content:center;
-align-items:center;
-z-index:9999;
-">
-
-<div style="
-background:white;
-color:black;
-padding:25px;
-border-radius:15px;
-width:350px;
-">
-
-<h3>Quên mật khẩu</h3>
-
-<input
-id="forgotEmail"
-type="email"
-placeholder="Nhập email của bạn"
-style="
-width:100%;
-padding:10px;
-margin:10px 0;
-">
-
-<button class="btn"
-onclick="sendResetEmail()">
-📧 Gửi
-</button>
-
-<button class="btn"
-style="background:#ef4444;color:white;"
-onclick="closeForgotModal()">
-❌ Hủy
-</button>
-
-</div>
-</div>
-</body>
-</html>
+    document.getElementById('app').cl
