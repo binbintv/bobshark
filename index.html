@@ -180,8 +180,11 @@ object-fit:cover;
             🚀 Bắt đầu hành trình
         </button>
 
+    </div>
+
 </div>
 
+<div id="authPage" class="hidden">
 <div id="authPage" class="hidden">
     <div class="card">
         <div class="tabs">
@@ -282,8 +285,11 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 function showRegister(){
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('authPage').classList.remove('hidden');
+
+    document.getElementById("heroContent").style.display = "none";
+
+    document.getElementById("authPage").classList.remove("hidden");
+
 }
 
 function showAuth(id, btn){
