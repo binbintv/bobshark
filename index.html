@@ -328,7 +328,39 @@ async function forgotPassword(){
         alert("Lỗi: " + error.message);
     }
 }
+function openForgotModal(){
+    document.getElementById("forgotModal").style.display = "flex";
+}
 
+function closeForgotModal(){
+    document.getElementById("forgotModal").style.display = "none";
+}
+
+async function sendResetEmail(){
+
+    const email =
+    document.getElementById("forgotEmail").value.trim();
+
+    if(!email){
+        alert("Vui lòng nhập Email");
+        return;
+    }
+
+    try{
+
+        await auth.sendPasswordResetEmail(email);
+
+        alert("📧 Đã gửi email đặt lại mật khẩu!");
+
+        closeForgotModal();
+
+    }catch(error){
+
+        alert("Lỗi: " + error.message);
+
+    }
+
+}
 window.onload = () => {
 
     auth.onAuthStateChanged(user => {
