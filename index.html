@@ -96,6 +96,10 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 
 <div id="app" class="hidden">
     <div class="card">
+        <button onclick="logoutUser()"
+        style="float:right;background:#ef4444;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;">
+        Đăng xuất
+        </button>
         <h1>🦈 BobShark AI</h1>
         <p id="welcome"></p>
         <p id="today"></p>
@@ -131,6 +135,7 @@ const db = firebase.firestore();
 function showRegister(){
     document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
 }
 
 function showAuth(id, btn){
@@ -200,11 +205,19 @@ async function loadApp(){
     const user = auth.currentUser;
     if(!user) return;
 
+    document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
 
-    document.getElementById('welcome').innerText = `Xin chào ${user.email} 👋`;
-    document.getElementById('today').innerText = `📅 ${new Date().toLocaleDateString('vi-VN')}`;
+    document.getElementById('welcome').innerText =
+        `Xin chào ${user.email} 👋`;
+
+    document.getElementById('today').innerText =
+        `📅 ${new Date().toLocaleDateString('vi-VN')}`;
+
+    document.getElementById('stars').innerText =
+        `⭐ Đã đăng nhập thành công`;
+
 }
 
 function logoutUser(){
@@ -213,7 +226,13 @@ function logoutUser(){
 
 window.onload = () => {
     auth.onAuthStateChanged(user => {
-        if(user) loadApp();
+        if(user){
+            loadApp();
+        }else{
+            document.getElementById('intro').style.display = 'block';
+            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('app').classList.add('hidden');
+        }
     });
 };
 </script>
