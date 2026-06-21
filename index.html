@@ -25,8 +25,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .tab.active{background:#ffd60a;color:#000}
 .auth-content{display:none}
 .active-auth{display:block}
-.footer{text-align:center;padding:20px;font-size:14px;opacity:0.8;margin-top:30px}
-.footer i{font-style:italic}
+.footer{text-align:center;padding:15px;font-size:13px;opacity:0.7;margin-top:20px}
 .password-container { position: relative; }
 .password-container input { padding-right: 45px; }
 .toggle-password {
@@ -153,14 +152,12 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </div>
 
 <footer class="footer">
-    <p>Liên hệ Admin: <strong>admin@bobshark.vn</strong> | Hotline: 0123 456 789</p>
-    <p><i>Made by Team Siêu Quậy</i></p>
+    <p>Admin: admin@bobshark.vn | Hotline: 0123 456 789</p>
 </footer>
 
 <script>
 const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
 
-// Tự động tạo Admin nếu chưa có
 function initAdmin() {
     let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
     if (admins.length === 0) {
