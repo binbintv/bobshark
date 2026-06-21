@@ -31,6 +31,13 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .card{animation:floatIn .7s ease}
 @keyframes floatIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 
+
+#loginBox .card{
+background:rgba(255,255,255,.12);
+padding:20px;
+border-radius:16px;
+}
+
 </style>
 </head>
 <body>
@@ -54,6 +61,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 <button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
 <button class="tab" onclick="showAuth('loginBox',this)">Đăng nhập</button>
 </div>
+
 <div id="registerBox" class="auth-content active-auth">
 
 <div class="card">
@@ -65,17 +73,24 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 <button class="btn" onclick="register()">Tạo tài khoản</button>
 </div>
 
+</div>
+
 <div id="loginBox" class="auth-content">
-<h2>Đăng nhập</h2>
+
+<div class="card">
+<h2>🔑 Đăng nhập</h2>
 <input id="loginUser" placeholder="Tên đăng nhập">
 <input id="loginPass" type="password" placeholder="Mật khẩu">
 <button class="btn" onclick="fakeLogin()">Đăng nhập</button>
 </div>
 
 </div>
+
+</div>
 </div>
 
 <div id="app" class="hidden">
+
 <div class="card">
 <h1>🦈 BobShark AI</h1>
 <p id="welcome"></p>
@@ -214,7 +229,7 @@ async function register(){
 async function loadApp(){
  let user=JSON.parse(localStorage.getItem('bobUser'));
  if(!user) return;
- register.classList.add('hidden');
+ document.getElementById('authPage').classList.add('hidden');
  app.classList.remove('hidden');
 
  const now=await getInternetDate();
