@@ -20,10 +20,7 @@
         align-items: center;
         border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .header h1 {
-        margin: 0;
-        font-size: 28px;
-    }
+    .header h1 { margin: 0; font-size: 28px; }
     .container {
         max-width: 1200px;
         margin: 30px auto;
@@ -98,7 +95,6 @@
 </div>
 
 <div class="container">
-
     <div class="stats">
         <div class="stat-card">
             <div class="stat-number" id="totalUsers">0</div>
@@ -125,7 +121,6 @@
                     <th>Ngày Tham Gia</th>
                     <th>Sao</th>
                     <th>Tiến Độ</th>
-                    <th>Hành động</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -133,8 +128,8 @@
     </div>
 
     <div class="card">
-        <button class="btn btn-danger" onclick="resetAllData()">🗑️ Reset Toàn Bộ Dữ Liệu</button>
         <button class="btn btn-primary" onclick="loadUsers()">🔄 Tải Lại Dữ Liệu</button>
+        <button class="btn btn-danger" onclick="resetAllData()">🗑️ Reset Dữ Liệu</button>
     </div>
 </div>
 
@@ -142,42 +137,22 @@
     <p>BobShark Admin Panel • Made by Team Siêu Quậy</p>
 </footer>
 
-<!-- ================== THÊM FIREBASE ================== -->
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
-
 <script>
-// Firebase Config
-const firebaseConfig = {
-    apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
-    authDomain: "bobshark-fbdfb.firebaseapp.com",
-    projectId: "bobshark-fbdfb",
-    storageBucket: "bobshark-fbdfb.firebasestorage.app",
-    messagingSenderId: "810024180746",
-    appId: "1:810024180746:web:4419819dff374b5a04d3f3"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// Load dữ liệu từ Firebase (Online)
-async function loadUsers() {
+// Load dữ liệu từ localStorage
+function loadUsers() {
+    const users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
     const tbody = document.querySelector('#userTable tbody');
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;">Đang tải dữ liệu...</td></tr>';
+    tbody.innerHTML = '';
 
     let totalStars = 0;
     let completed = 0;
-    let userCount = 0;
 
-    try {
-        const snapshot = await db.collection("users").get();
-        tbody.innerHTML = '';
-
-        snapshot.forEach(doc => {
-            const user = doc.data();
-            userCount++;
+    if (users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:#aaa;">Chưa có người dùng nào</td></tr>`;
+    } else {
+        users.forEach(user => {
             const progress = user.progress ? user.progress.filter(Boolean).length : 0;
-            if(progress === 7) completed++;
+            if (progress === 7) completed++;
             totalStars += user.stars || 0;
 
             const row = document.createElement('tr');
@@ -188,44 +163,27 @@ async function loadUsers() {
                 <td>${user.startDate ? new Date(user.startDate).toLocaleDateString('vi-VN') : '-'}</td>
                 <td><strong>${user.stars || 0}</strong> ⭐</td>
                 <td>${progress}/7</td>
-                <td>
-                    <button class="btn btn-danger" onclick="deleteUser('${doc.id}')" style="padding:5px 10px;font-size:12px;">Xóa</button>
-                </td>
             `;
             tbody.appendChild(row);
         });
-
-        document.getElementById('totalUsers').textContent = userCount;
-        document.getElementById('totalStars').textContent = totalStars;
-        document.getElementById('completedUsers').textContent = completed;
-
-        if(userCount === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#aaa;">Chưa có người dùng nào</td></tr>';
-        }
-    } catch(e) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:red;">Lỗi tải dữ liệu: ' + e.message + '</td></tr>';
     }
-}
 
-async function deleteUser(docId) {
-    if(confirm("Bạn có chắc muốn xóa người dùng này?")) {
-        try {
-            await db.collection("users").doc(docId).delete();
-            loadUsers();
-        } catch(e) {
-            alert("Lỗi xóa: " + e.message);
-        }
-    }
+    document.getElementById('totalUsers').textContent = users.length;
+    document.getElementById('totalStars').textContent = totalStars;
+    document.getElementById('completedUsers').textContent = completed;
 }
 
 function resetAllData() {
-    if(confirm("⚠️ Bạn có chắc muốn XÓA TOÀN BỘ dữ liệu người dùng trên cloud?")) {
-        alert("Chức năng reset toàn bộ cloud chưa được kích hoạt để tránh mất dữ liệu.");
+    if (confirm("Bạn có chắc muốn xóa toàn bộ dữ liệu?")) {
+        localStorage.removeItem('bobUsers');
+        localStorage.removeItem('bobUser');
+        alert("Đã reset dữ liệu!");
+        loadUsers();
     }
 }
 
 function logoutAdmin() {
-    if(confirm("Đăng xuất khỏi Admin?")) {
+    if (confirm("Đăng xuất?")) {
         localStorage.removeItem('currentAdmin');
         window.location.href = 'index.html';
     }
@@ -234,6 +192,5 @@ function logoutAdmin() {
 // Tự động load
 window.onload = loadUsers;
 </script>
-
 </body>
 </html>
