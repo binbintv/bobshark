@@ -14,7 +14,9 @@ body{
     background:linear-gradient(180deg,#001d3d,#003566,#0077b6);
     color:white;
 }
-.hidden{display:none}
+.hidden{
+    display:none;
+}
 #intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
 .hero{
     position:absolute;
@@ -284,7 +286,6 @@ const db = firebase.firestore();
 function showRegister(){
     document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.remove('hidden');
-    document.getElementById('app').classList.add('hidden');
 }
 
 function showAuth(id, btn){
