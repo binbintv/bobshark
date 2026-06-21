@@ -142,56 +142,85 @@
     <p>BobShark Admin Panel • Made by Team Siêu Quậy</p>
 </footer>
 
+<!-- ================== THÊM FIREBASE ================== -->
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+
 <script>
-// Load dữ liệu
-function loadUsers() {
-    const users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
+// Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
+    authDomain: "bobshark-fbdfb.firebaseapp.com",
+    projectId: "bobshark-fbdfb",
+    storageBucket: "bobshark-fbdfb.firebasestorage.app",
+    messagingSenderId: "810024180746",
+    appId: "1:810024180746:web:4419819dff374b5a04d3f3"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Load dữ liệu từ Firebase (Online)
+async function loadUsers() {
     const tbody = document.querySelector('#userTable tbody');
-    tbody.innerHTML = '';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;">Đang tải dữ liệu...</td></tr>';
 
     let totalStars = 0;
     let completed = 0;
+    let userCount = 0;
 
-    users.forEach((user, index) => {
-        const progress = user.progress ? user.progress.filter(Boolean).length : 0;
-        if(progress === 7) completed++;
-        totalStars += user.stars || 0;
+    try {
+        const snapshot = await db.collection("users").get();
+        tbody.innerHTML = '';
 
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${user.name || 'Không tên'}</td>
-            <td>${user.username}</td>
-            <td>${user.birth ? new Date(user.birth).toLocaleDateString('vi-VN') : '-'}</td>
-            <td>${new Date(user.startDate).toLocaleDateString('vi-VN')}</td>
-            <td><strong>${user.stars || 0}</strong> ⭐</td>
-            <td>${progress}/7</td>
-            <td>
-                <button class="btn btn-danger" onclick="deleteUser(${index})" style="padding:5px 10px;font-size:12px;">Xóa</button>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
+        snapshot.forEach(doc => {
+            const user = doc.data();
+            userCount++;
+            const progress = user.progress ? user.progress.filter(Boolean).length : 0;
+            if(progress === 7) completed++;
+            totalStars += user.stars || 0;
 
-    document.getElementById('totalUsers').textContent = users.length;
-    document.getElementById('totalStars').textContent = totalStars;
-    document.getElementById('completedUsers').textContent = completed;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name || 'Không tên'}</td>
+                <td>${user.username || ''}</td>
+                <td>${user.birth ? new Date(user.birth).toLocaleDateString('vi-VN') : '-'}</td>
+                <td>${user.startDate ? new Date(user.startDate).toLocaleDateString('vi-VN') : '-'}</td>
+                <td><strong>${user.stars || 0}</strong> ⭐</td>
+                <td>${progress}/7</td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteUser('${doc.id}')" style="padding:5px 10px;font-size:12px;">Xóa</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        document.getElementById('totalUsers').textContent = userCount;
+        document.getElementById('totalStars').textContent = totalStars;
+        document.getElementById('completedUsers').textContent = completed;
+
+        if(userCount === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#aaa;">Chưa có người dùng nào</td></tr>';
+        }
+    } catch(e) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:red;">Lỗi tải dữ liệu: ' + e.message + '</td></tr>';
+    }
 }
 
-function deleteUser(index) {
+async function deleteUser(docId) {
     if(confirm("Bạn có chắc muốn xóa người dùng này?")) {
-        let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
-        users.splice(index, 1);
-        localStorage.setItem('bobUsers', JSON.stringify(users));
-        loadUsers();
+        try {
+            await db.collection("users").doc(docId).delete();
+            loadUsers();
+        } catch(e) {
+            alert("Lỗi xóa: " + e.message);
+        }
     }
 }
 
 function resetAllData() {
-    if(confirm("⚠️ Bạn có chắc muốn XÓA TOÀN BỘ dữ liệu người dùng? Hành động này không thể hoàn tác!")) {
-        localStorage.removeItem('bobUsers');
-        localStorage.removeItem('bobUser');
-        alert("Đã reset toàn bộ dữ liệu!");
-        loadUsers();
+    if(confirm("⚠️ Bạn có chắc muốn XÓA TOÀN BỘ dữ liệu người dùng trên cloud?")) {
+        alert("Chức năng reset toàn bộ cloud chưa được kích hoạt để tránh mất dữ liệu.");
     }
 }
 
@@ -202,7 +231,7 @@ function logoutAdmin() {
     }
 }
 
-// Tự động load khi mở trang
+// Tự động load
 window.onload = loadUsers;
 </script>
 
