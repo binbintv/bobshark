@@ -37,7 +37,6 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
         <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
         <div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
         <div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
-        
         <div class="hero">
             <h1 style="font-size:3rem;margin:0">🦈 BOBSHARK</h1>
             <p style="font-size:1.3rem">Đồng hành cùng Bob khai phá tương lai</p>
@@ -103,7 +102,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
             <option>Giáo viên</option>
         </select>
         <button class="btn" onclick="analyze()">Phân tích</button>
-        <div id="analysis" style="margin-top:15px;padding:15px;background:rgba(255,255,255,0.1);border-radius:10px;"></div>
+        <div id="analysis" style="margin-top:15px;padding:15px;background:rgba(255,255,255,0.1);border-radius:10px;min-height:80px;"></div>
     </div>
 
     <div class="card">
@@ -223,10 +222,8 @@ function loginAdmin(){
 
 // ====================== APP ======================
 async function loadApp(){
-    let user = JSON.parse(localStorage.getItem('bobUser'));
+    const user = JSON.parse(localStorage.getItem('bobUser'));
     if(!user) return;
-
-    if(!user.analysisScores) user.analysisScores = {};
 
     document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.add('hidden');
@@ -292,6 +289,7 @@ function completeTask(){
 function analyze(){
     const job = document.getElementById('job').value;
     let user = JSON.parse(localStorage.getItem('bobUser'));
+    if(!user.analysisScores) user.analysisScores = {};
 
     if(!user.analysisScores[job]){
         user.analysisScores[job] = 55 + Math.floor(Math.random() * 40);
@@ -309,10 +307,9 @@ function analyze(){
 function openGacha(){ document.getElementById('modal').style.display = 'flex'; }
 function closeGacha(){ document.getElementById('modal').style.display = 'none'; }
 
+// Chỉ load app khi đã đăng nhập (không tự động sau khi đóng tab)
 window.onload = () => {
-    if(localStorage.getItem('bobUser')){
-        loadApp();
-    }
+    // Không tự động loadApp() nữa → buộc phải đăng nhập
 };
 </script>
 </body>
