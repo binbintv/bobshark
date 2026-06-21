@@ -175,7 +175,21 @@ async function loadUsers() {
         snapshot.forEach(doc => {
             const user = doc.data();
             count++;
-            const progress = user.progress ? user.progress.filter(Boolean).length : 0;
+          let progress = 0;
+
+if(user.progress){
+
+    if(Array.isArray(user.progress)){
+        progress = user.progress.filter(Boolean).length;
+    }
+
+    else{
+        progress = Object.values(user.progress)
+            .filter(v => v === true)
+            .length;
+    }
+
+}
             if (progress === 7) completed++;
             totalStars += user.stars || 0;
 
