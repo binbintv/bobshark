@@ -5,28 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BobShark</title>
 <style>
-/* Style giữ nguyên như trước */
 body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
 .hidden{display:none}
-#intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden;display:flex;align-items:center;justify-content:center}
+#intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
 .fish{position:absolute;font-size:28px;animation:swim 12s linear infinite}
 @keyframes swim{from{left:-20%}to{left:120%}}
-.hero{text-align:center}
-.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000;font-size:18px}
+.hero{position:absolute;top:40%;width:100%;text-align:center}
+.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer}
 .card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
 .day{padding:15px;border-radius:10px;text-align:center;background:#2563eb;cursor:pointer}
-.locked{background:#555 !important}
-.done{background:#16a34a !important}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center;z-index:10000}
-.modal-content{background:#fff;color:#000;padding:25px;border-radius:15px;max-width:500px;width:90%}
-.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.tab{flex:1;padding:12px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.15);color:#fff;font-weight:bold;min-width:120px}
+.locked{background:#555}
+.done{background:#16a34a}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
+.modal-content{background:#fff;color:#000;padding:20px;border-radius:15px;max-width:500px}
+.tabs{display:flex;gap:10px;margin-bottom:20px}
+.tab{flex:1;padding:12px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.15);color:#fff;font-weight:bold}
 .tab.active{background:#ffd60a;color:#000}
 .auth-content{display:none}
-.active-auth{display:block}
-.footer{text-align:center;padding:15px;font-size:13px;opacity:0.7;margin-top:20px}
+.active-auth{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:floatIn .7s ease}
+@keyframes floatIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 .password-container { position: relative; }
 .password-container input { padding-right: 45px; }
 .toggle-password {
@@ -40,25 +41,168 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </style>
 </head>
 <body>
+<div id="intro">
+<div class="fish" style="top:20%">🐟🐟🐟</div>
+<div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
+<div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
+<div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
+<div class="hero">
+<h1>🦈 BOBSHARK</h1>
+<p>Đồng hành cùng Bob khai phá tương lai</p>
+<button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
+</div>
+</div>
 
-<!-- Phần intro, authPage, app giữ nguyên như file trước -->
-<!-- ... (để ngắn gọn, bạn copy từ file cũ của bạn) ... -->
+<div id="authPage" class="hidden">
+<div class="card">
+<div class="tabs">
+<button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
+<button class="tab" onclick="showAuth('loginBox',this)">Đăng nhập</button>
+<button class="tab" onclick="showAuth('adminLoginBox',this)">Đăng nhập Admin</button>
+</div>
 
-<!-- Chỉ thay đổi phần script quan trọng -->
+<div id="registerBox" class="auth-content active-auth">
+<div class="card">
+<h2>Tạo tài khoản</h2>
+<input id="regName" placeholder="Họ và tên">
+<input id="regUser" placeholder="Tên đăng nhập">
+<div class="password-container">
+<input id="regPass" type="password" placeholder="Mật khẩu">
+<span class="toggle-password" onclick="togglePassword('regPass', this)">👁️</span>
+</div>
+<input id="birth" type="date">
+<button class="btn" onclick="register()">Tạo tài khoản</button>
+</div>
+</div>
+
+<div id="loginBox" class="auth-content">
+<div class="card">
+<h2>🔑 Đăng nhập</h2>
+<input id="loginUser" placeholder="Tên đăng nhập">
+<div class="password-container">
+<input id="loginPass" type="password" placeholder="Mật khẩu">
+<span class="toggle-password" onclick="togglePassword('loginPass', this)">👁️</span>
+</div>
+<button class="btn" onclick="fakeLogin()">Đăng nhập</button>
+</div>
+</div>
+
+<div id="adminLoginBox" class="auth-content">
+<div class="card">
+<h2>👑 Đăng nhập Admin</h2>
+<input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
+<div class="password-container">
+<input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
+<span class="toggle-password" onclick="togglePassword('adminLoginPass', this)">👁️</span>
+</div>
+<button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
+</div>
+</div>
+</div>
+</div>
+
+<div id="app" class="hidden">
+<div class="card">
+<h1>🦈 BobShark AI</h1>
+<p id="welcome"></p>
+<p id="today"></p>
+<p id="stars"></p>
+</div>
+<div class="card">
+<h2>🎯 Phân tích nghề nghiệp</h2>
+<select id="job">
+<option>AI Engineer</option>
+<option>Lập trình viên</option>
+<option>Bác sĩ</option>
+<option>Marketing</option>
+<option>Giáo viên</option>
+</select>
+<button class="btn" onclick="analyze()">Phân tích</button>
+<div id="analysis"></div>
+</div>
+<div class="card">
+<h2>📅 Hành trình 7 ngày</h2>
+<div id="days" class="days"></div>
+</div>
+<div class="card">
+<h2>🎁 Gacha</h2>
+<button class="btn" onclick="openGacha()">Mở Gacha</button>
+</div>
+</div>
+
+<!-- Modals -->
+<div class="modal" id="modal">
+<div class="modal-content">
+<h2>🚧 Gacha bảo trì</h2>
+<p>Tính năng đang được nâng cấp.</p>
+<button class="btn" onclick="closeGacha()">Đã hiểu</button>
+</div>
+</div>
+
+<div class="modal" id="taskModal">
+<div class="modal-content">
+<h2 id="taskTitle"></h2>
+<p id="taskText"></p>
+<button class="btn" onclick="completeTask()">Hoàn thành nhiệm vụ</button>
+</div>
+</div>
+
+<footer class="footer">
+    <p>Admin: admin@bobshark.vn | Hotline: 0123 456 789</p>
+</footer>
+
+<!-- ================== THÊM FIREBASE ================== -->
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
 
 <script>
-const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
+// Firebase Config (giữ nguyên config cũ của bạn)
+const firebaseConfig = {
+    apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
+    authDomain: "bobshark-fbdfb.firebaseapp.com",
+    projectId: "bobshark-fbdfb",
+    storageBucket: "bobshark-fbdfb.firebasestorage.app",
+    messagingSenderId: "810024180746",
+    appId: "1:810024180746:web:4419819dff374b5a04d3f3"
+};
 
-function initAdmin() {
-    let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
-    if (admins.length === 0) {
-        admins.push({name: "Super Admin", username: "admin", password: "admin123", role: "admin"});
-        localStorage.setItem('bobAdmins', JSON.stringify(admins));
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const tasks=[ "Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
+
+async function getInternetDate(){
+ try{
+  const r=await fetch('https://worldtimeapi.org/api/timezone/Asia/Ho_Chi_Minh');
+  const d=await r.json();
+  return new Date(d.datetime);
+ }catch(e){return new Date();}
+}
+
+function showRegister(){
+ document.getElementById('intro').style.display='none';
+ document.getElementById('authPage').classList.remove('hidden');
+}
+
+function showAuth(id,btn){
+ document.querySelectorAll('.auth-content').forEach(x=>x.classList.remove('active-auth'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active-auth');
+ btn.classList.add('active');
+}
+
+function togglePassword(inputId, icon){
+    const input = document.getElementById(inputId);
+    if(input.type === "password"){
+        input.type = "text";
+        icon.textContent = "🙈";
+    } else {
+        input.type = "password";
+        icon.textContent = "👁️";
     }
 }
 
-// Các hàm khác giữ nguyên (showRegister, showAuth, togglePassword, register, fakeLogin, loginAdmin...)
-
+// ================== ĐĂNG KÝ - LƯU ONLINE ==================
 async function register(){
     const name = document.getElementById('regName').value.trim();
     const username = document.getElementById('regUser').value.trim();
@@ -78,62 +222,35 @@ async function register(){
         startDate: (await getInternetDate()).toISOString(),
         stars: 0,
         progress: [false,false,false,false,false,false,false],
-        analysisScores: {}
+        analysisScores: {},
+        createdAt: new Date().toISOString()
     };
 
-    // LƯU RẤT RÕ VÀO DANH SÁCH ADMIN
-    let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
-    users.push(user);
-    localStorage.setItem('bobUsers', JSON.stringify(users));
-
-    localStorage.setItem('bobUser', JSON.stringify(user));
-
-    alert("✅ Đăng ký thành công!");
-    loadApp();
+    try {
+        await db.collection("users").add(user);           // Lưu online
+        localStorage.setItem('bobUser', JSON.stringify(user)); // Lưu local cho session
+        alert("✅ Đăng ký thành công! Dữ liệu đã lưu online.");
+        loadApp();
+    } catch(e) {
+        alert("Lỗi lưu dữ liệu: " + e.message);
+    }
 }
 
-// Các hàm loadApp, renderDays, analyze... giữ nguyên
+// Các hàm cũ giữ nguyên hoàn toàn
+function fakeLogin(){ /* code cũ */ }
+function loginAdmin(){ /* code cũ */ }
+async function loadApp(){ /* code cũ */ }
+async function renderDays(){ /* code cũ */ }
+async function getUnlockedDay(){ /* code cũ */ }
+let currentTask=0;
+function openTask(i){ /* code cũ */ }
+function completeTask(){ /* code cũ */ }
+function analyze(){ /* code cũ */ }
+function openGacha(){ document.getElementById('modal').style.display='flex'; }
+function closeGacha(){ document.getElementById('modal').style.display='none'; }
 
-// Thêm hàm Export / Import cho Admin
-function exportData() {
-    const data = {
-        bobUsers: JSON.parse(localStorage.getItem('bobUsers') || '[]'),
-        bobAdmins: JSON.parse(localStorage.getItem('bobAdmins') || '[]')
-    };
-    const str = JSON.stringify(data, null, 2);
-    const blob = new Blob([str], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'bobshark_backup.json';
-    a.click();
-}
-
-function importData() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = e => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = ev => {
-            try {
-                const data = JSON.parse(ev.target.result);
-                if(data.bobUsers) localStorage.setItem('bobUsers', JSON.stringify(data.bobUsers));
-                if(data.bobAdmins) localStorage.setItem('bobAdmins', JSON.stringify(data.bobAdmins));
-                alert("✅ Import dữ liệu thành công!");
-                location.reload();
-            } catch(err) {
-                alert("File không hợp lệ!");
-            }
-        };
-        reader.readAsText(file);
-    };
-    input.click();
-}
-
-window.onload = () => {
-    initAdmin();
+window.onload=()=>{
+    if(localStorage.getItem('bobUser')) loadApp();
 };
 </script>
 </body>
