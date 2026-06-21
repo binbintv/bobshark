@@ -2,122 +2,53 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BobShark Admin</title>
 
 <style>
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#0b3d91;
-    color:white;
+font-family:Arial;
+background:#0b3d91;
+padding:20px;
+color:white;
 }
 
-.container{
-    width:95%;
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
-}
-
-.card{
-    background:rgba(255,255,255,0.1);
-    padding:20px;
-    border-radius:15px;
-    margin-top:20px;
-}
-
-input{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-}
-
-button{
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
+h1{
+text-align:center;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
-    color:black;
+width:100%;
+border-collapse:collapse;
+background:white;
+color:black;
 }
 
 th,td{
-    border:1px solid #ccc;
-    padding:10px;
-    text-align:center;
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
 }
 
-.hidden{
-    display:none;
-}
-
-.stat{
-    display:inline-block;
-    margin-right:20px;
-    font-size:18px;
+th{
+background:#1976ff;
+color:white;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
 <h1>👑 BobShark Admin</h1>
-
-<div id="loginBox" class="card">
-
-<h2>Đăng nhập Admin</h2>
-
-<input id="adminUser" placeholder="Tên đăng nhập">
-
-<input id="adminPass" type="password" placeholder="Mật khẩu">
-
-<button onclick="adminLogin()">Đăng nhập</button>
-
-</div>
-
-<div id="adminPanel" class="hidden">
-
-<div class="card">
-
-<h2>📊 Thống kê</h2>
-
-<div class="stat">
-👥 Người dùng:
-<span id="totalUsers">0</span>
-</div>
-
-<div class="stat">
-⭐ Tổng sao:
-<span id="totalStars">0</span>
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>Danh sách người dùng</h2>
 
 <table>
 
 <thead>
 <tr>
-<th>Họ tên</th>
+<th>Tên</th>
 <th>Email</th>
+<th>Nghề</th>
 <th>Ngày sinh</th>
-<th>Nghề nghiệp</th>
 <th>Sao</th>
-<th>Tiến độ</th>
 </tr>
 </thead>
 
@@ -125,23 +56,17 @@ th,td{
 
 </table>
 
-</div>
-
-</div>
-
-</div>
-
 <script type="module">
 
 import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 
 import {
 getFirestore,
 collection,
 getDocs
 }
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 const firebaseConfig = {
 
@@ -155,108 +80,42 @@ storageBucket: "bobshark-fbdfb.firebasestorage.app",
 
 messagingSenderId: "810024180746",
 
-appId: "1:810024180746:web:4419819dff374b5a04d3f3",
-
-measurementId: "G-3G7YCWW9JZ"
+appId: "1:810024180746:web:4419819dff374b5a04d3f3"
 
 };
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
-
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "admin123";
-
-window.adminLogin = async function(){
-
-const user =
-document.getElementById("adminUser").value;
-
-const pass =
-document.getElementById("adminPass").value;
-
-if(
-user !== ADMIN_USER ||
-pass !== ADMIN_PASS
-){
-alert("Sai tài khoản Admin");
-return;
-}
-
-document.getElementById("loginBox")
-.classList.add("hidden");
-
-document.getElementById("adminPanel")
-.classList.remove("hidden");
-
-loadUsers();
-
-}
 
 async function loadUsers(){
 
 const snapshot =
-await getDocs(
-collection(db,"users")
-);
+await getDocs(collection(db,"users"));
 
-let totalUsers = 0;
-let totalStars = 0;
-
-const tbody =
+const table =
 document.getElementById("userTable");
 
-tbody.innerHTML = "";
+table.innerHTML="";
 
-snapshot.forEach((docSnap)=>{
+snapshot.forEach(doc=>{
 
-const data = docSnap.data();
+const user = doc.data();
 
-totalUsers++;
-
-totalStars += Number(data.stars || 0);
-
-let completed = 0;
-
-if(data.progress){
-
-for(let i=1;i<=7;i++){
-
-if(data.progress["day"+i])
-completed++;
-
-}
-
-}
-
-tbody.innerHTML += `
+table.innerHTML += `
 <tr>
-
-<td>${data.name || ""}</td>
-
-<td>${data.email || ""}</td>
-
-<td>${data.birth || ""}</td>
-
-<td>${data.career || ""}</td>
-
-<td>${data.stars || 0}</td>
-
-<td>${completed}/7</td>
-
+<td>${user.name||""}</td>
+<td>${user.email||""}</td>
+<td>${user.career||""}</td>
+<td>${user.birth||""}</td>
+<td>${user.stars||0}</td>
 </tr>
 `;
 
 });
 
-document.getElementById("totalUsers")
-.innerText = totalUsers;
-
-document.getElementById("totalStars")
-.innerText = totalStars;
-
 }
+
+loadUsers();
 
 </script>
 
