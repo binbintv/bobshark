@@ -108,6 +108,12 @@ float:right;">
                     <span class="toggle-password" onclick="togglePassword('loginPass', this)">👁️</span>
                 </div>
                 <button class="btn" onclick="loginWithFirebase()">Đăng nhập</button>
+                <p style="margin-top:10px;">
+<a href="#" onclick="forgotPassword()"
+style="color:#ffd60a;text-decoration:none;">
+Quên mật khẩu?
+</a>
+</p>
             </div>
         </div>
 
@@ -302,6 +308,30 @@ function startJourney(){
     window.location.href = "trangchu.html";
 }
 window.onload = () => {
+    async function forgotPassword(){
+
+    const email =
+    document.getElementById("loginEmail").value.trim();
+
+    if(!email){
+        alert("Vui lòng nhập Email trước.");
+        return;
+    }
+
+    try{
+
+        await auth.sendPasswordResetEmail(email);
+
+        alert(
+        "📧 Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra hộp thư."
+        );
+
+    }catch(error){
+
+        alert("Lỗi: " + error.message);
+
+    }
+}
     auth.onAuthStateChanged(user => {
         if(user){
             loadApp();
