@@ -7,276 +7,241 @@
 <style>
 body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
 .hidden{display:none}
-.center{display:flex;justify-content:center;align-items:center}
 #intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
 .fish{position:absolute;font-size:28px;animation:swim 12s linear infinite}
 @keyframes swim{from{left:-20%}to{left:120%}}
 .hero{position:absolute;top:40%;width:100%;text-align:center}
-.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer}
+.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000}
 .card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
 .day{padding:15px;border-radius:10px;text-align:center;background:#2563eb;cursor:pointer}
 .locked{background:#555}
 .done{background:#16a34a}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
-.modal-content{background:#fff;color:#000;padding:20px;border-radius:15px;max-width:500px}
-.tabs{display:flex;gap:10px;margin-bottom:20px}
-.tab{flex:1;padding:12px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.15);color:#fff;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center;z-index:10000}
+.modal-content{background:#fff;color:#000;padding:25px;border-radius:15px;max-width:500px;width:90%}
+.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.tab{flex:1;padding:12px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.15);color:#fff;font-weight:bold;min-width:120px}
 .tab.active{background:#ffd60a;color:#000}
 .auth-content{display:none}
-.active-auth{display:block;animation:fadeUp .4s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.card{animation:floatIn .7s ease}
-@keyframes floatIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.active-auth{display:block}
 </style>
 </head>
 <body>
+
 <div id="intro">
-<div class="fish" style="top:20%">🐟🐟🐟</div>
-<div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
-<div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
-<div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
-<div class="hero">
-<h1>🦈 BOBSHARK</h1>
-<p>Đồng hành cùng Bob khai phá tương lai</p>
-<button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
-</div>
+    <div class="fish" style="top:20%">🐟🐟🐟</div>
+    <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
+    <div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
+    <div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
+    <div class="hero">
+        <h1>🦈 BOBSHARK</h1>
+        <p>Đồng hành cùng Bob khai phá tương lai</p>
+        <button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
+    </div>
 </div>
 
 <div id="authPage" class="hidden">
-<div class="card">
-<div class="tabs">
-<button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
-<button class="tab" onclick="showAuth('loginBox',this)">Đăng nhập</button>
-<button class="tab" onclick="showAuth('adminRegisterBox',this)">Đăng ký Admin</button>
-<button class="tab" onclick="showAuth('adminLoginBox',this)">Đăng nhập Admin</button>
-</div>
+    <div class="card">
+        <div class="tabs">
+            <button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
+            <button class="tab" onclick="showAuth('loginBox',this)">Đăng nhập</button>
+            <button class="tab" onclick="showAuth('adminLoginBox',this)">Đăng nhập Admin</button>
+        </div>
 
-<div id="registerBox" class="auth-content active-auth">
-<div class="card">
-<h2>Tạo tài khoản</h2>
-<input id="regName" placeholder="Họ và tên">
-<input id="regUser" placeholder="Tên đăng nhập">
-<input id="regPass" type="password" placeholder="Mật khẩu">
-<input id="birth" type="date">
-<button class="btn" onclick="register()">Tạo tài khoản</button>
-</div>
-</div>
+        <div id="registerBox" class="auth-content active-auth">
+            <div class="card">
+                <h2>Tạo tài khoản</h2>
+                <input id="regName" placeholder="Họ và tên">
+                <input id="regUser" placeholder="Tên đăng nhập">
+                <input id="regPass" type="password" placeholder="Mật khẩu">
+                <input id="birth" type="date">
+                <button class="btn" onclick="register()">Tạo tài khoản</button>
+            </div>
+        </div>
 
-<div id="loginBox" class="auth-content">
-<div class="card">
-<h2>🔑 Đăng nhập</h2>
-<input id="loginUser" placeholder="Tên đăng nhập">
-<input id="loginPass" type="password" placeholder="Mật khẩu">
-<button class="btn" onclick="fakeLogin()">Đăng nhập</button>
-</div>
-</div>
+        <div id="loginBox" class="auth-content">
+            <div class="card">
+                <h2>🔑 Đăng nhập</h2>
+                <input id="loginUser" placeholder="Tên đăng nhập">
+                <input id="loginPass" type="password" placeholder="Mật khẩu">
+                <button class="btn" onclick="fakeLogin()">Đăng nhập</button>
+            </div>
+        </div>
 
-<!-- === THÊM PHẦN ADMIN === -->
-<div id="adminRegisterBox" class="auth-content">
-<div class="card">
-<h2>👑 Đăng ký Admin</h2>
-<input id="adminRegName" placeholder="Họ tên Admin">
-<input id="adminRegUser" placeholder="Tên đăng nhập Admin">
-<input id="adminRegPass" type="password" placeholder="Mật khẩu Admin">
-<button class="btn" onclick="registerAdmin()">Đăng ký Admin</button>
-</div>
-</div>
-
-<div id="adminLoginBox" class="auth-content">
-<div class="card">
-<h2>👑 Đăng nhập Admin</h2>
-<input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
-<input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
-<button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
-</div>
-</div>
-</div>
+        <div id="adminLoginBox" class="auth-content">
+            <div class="card">
+                <h2>👑 Đăng nhập Admin</h2>
+                <input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
+                <input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
+                <button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="app" class="hidden">
-<div class="card">
-<h1>🦈 BobShark AI</h1>
-<p id="welcome"></p>
-<p id="today"></p>
-<p id="stars"></p>
-</div>
-<div class="card">
-<h2>🎯 Phân tích nghề nghiệp</h2>
-<select id="job">
-<option>AI Engineer</option>
-<option>Lập trình viên</option>
-<option>Bác sĩ</option>
-<option>Marketing</option>
-<option>Giáo viên</option>
-</select>
-<button class="btn" onclick="analyze()">Phân tích</button>
-<div id="analysis"></div>
-</div>
-<div class="card">
-<h2>📅 Hành trình 7 ngày</h2>
-<div id="days" class="days"></div>
-</div>
-<div class="card">
-<h2>🎁 Gacha</h2>
-<button class="btn" onclick="openGacha()">Mở Gacha</button>
-</div>
-<div class="card">
-<h2>👑 Quản trị</h2>
-<button class="btn" onclick="openAdminLogin()">Admin</button>
-</div>
+    <div class="card">
+        <h1>🦈 BobShark AI</h1>
+        <p id="welcome"></p>
+        <p id="today"></p>
+        <p id="stars"></p>
+    </div>
+    <div class="card">
+        <h2>🎯 Phân tích nghề nghiệp</h2>
+        <select id="job">
+            <option>AI Engineer</option>
+            <option>Lập trình viên</option>
+            <option>Bác sĩ</option>
+            <option>Marketing</option>
+            <option>Giáo viên</option>
+        </select>
+        <button class="btn" onclick="analyze()">Phân tích</button>
+        <div id="analysis"></div>
+    </div>
+    <div class="card">
+        <h2>📅 Hành trình 7 ngày</h2>
+        <div id="days" class="days"></div>
+    </div>
+    <div class="card">
+        <h2>🎁 Gacha</h2>
+        <button class="btn" onclick="openGacha()">Mở Gacha</button>
+    </div>
 </div>
 
-<!-- Modals (giữ nguyên) -->
+<!-- Modals -->
 <div class="modal" id="modal">
-<div class="modal-content">
-<h2>🚧 Gacha bảo trì</h2>
-<p>Tính năng đang được nâng cấp.</p>
-<button class="btn" onclick="closeGacha()">Đã hiểu</button>
-</div>
+    <div class="modal-content">
+        <h2>🚧 Gacha bảo trì</h2>
+        <p>Tính năng đang được nâng cấp.</p>
+        <button class="btn" onclick="closeGacha()">Đã hiểu</button>
+    </div>
 </div>
 
 <div class="modal" id="taskModal">
-<div class="modal-content">
-<h2 id="taskTitle"></h2>
-<p id="taskText"></p>
-<button class="btn" onclick="completeTask()">Hoàn thành nhiệm vụ</button>
-</div>
-</div>
-
-<div class="modal" id="adminModal">
-<div class="modal-content">
-<h2>👑 Đăng nhập Admin</h2>
-<input id="adminPassword" type="password" placeholder="Nhập mật khẩu Admin">
-<br><br>
-<button class="btn" onclick="checkAdmin()">Đăng nhập</button>
-<button class="btn" onclick="closeAdminLogin()">Hủy</button>
-</div>
+    <div class="modal-content">
+        <h2 id="taskTitle"></h2>
+        <p id="taskText"></p>
+        <button class="btn" onclick="completeTask()">Hoàn thành nhiệm vụ</button>
+    </div>
 </div>
 
 <script>
-const tasks=[
-"Khám phá bản thân",
-"Tìm hiểu ngành CNTT",
-"Tìm hiểu ngành Y",
-"Khám phá Marketing",
-"Khám phá kỹ năng mềm",
-"Tìm hiểu trường đại học",
-"Tổng kết hành trình"
-];
+const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
 
 async function getInternetDate(){
- try{
-  const r=await fetch('https://worldtimeapi.org/api/timezone/Asia/Ho_Chi_Minh');
-  const d=await r.json();
-  return new Date(d.datetime);
- }catch(e){return new Date();}
+    try{
+        const r = await fetch('https://worldtimeapi.org/api/timezone/Asia/Ho_Chi_Minh');
+        const d = await r.json();
+        return new Date(d.datetime);
+    }catch(e){return new Date();}
 }
 
 function showRegister(){
- document.getElementById('intro').style.display='none';
- document.getElementById('authPage').classList.remove('hidden');
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('authPage').classList.remove('hidden');
 }
 
-function showAuth(id,btn){
- document.querySelectorAll('.auth-content').forEach(x=>x.classList.remove('active-auth'));
- document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
- document.getElementById(id).classList.add('active-auth');
- btn.classList.add('active');
+function showAuth(id, btn){
+    document.querySelectorAll('.auth-content').forEach(x => x.classList.remove('active-auth'));
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.getElementById(id).classList.add('active-auth');
+    btn.classList.add('active');
 }
 
 // ====================== USER ======================
 async function register(){
- const regName = document.getElementById('regName').value;
- const regUser = document.getElementById('regUser').value;
- const regPass = document.getElementById('regPass').value;
- const birth = document.getElementById('birth').value;
+    const name = document.getElementById('regName').value.trim();
+    const username = document.getElementById('regUser').value.trim();
+    const password = document.getElementById('regPass').value.trim();
+    const birth = document.getElementById('birth').value;
 
- if(!regUser || !regPass){
-   alert('Vui lòng nhập tên đăng nhập và mật khẩu');
-   return;
- }
+    if(!username || !password){
+        alert("Vui lòng nhập tên đăng nhập và mật khẩu!");
+        return;
+    }
 
- const user = {
-  name: regName || "Bob",
-  username: regUser,
-  password: regPass,
-  birth: birth,
-  startDate: (await getInternetDate()).toISOString(),
-  stars: 0,
-  progress: [false,false,false,false,false,false,false]
- };
+    const user = {
+        name: name || "Bob",
+        username: username,
+        password: password,
+        birth: birth,
+        startDate: (await getInternetDate()).toISOString(),
+        stars: 0,
+        progress: [false,false,false,false,false,false,false]
+    };
 
- // === LƯU USER VÀO DANH SÁCH ĐỂ ADMIN XEM ===
- let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
- users.push(user);
- localStorage.setItem('bobUsers', JSON.stringify(users));
+    // Lưu danh sách cho Admin
+    let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
+    users.push(user);
+    localStorage.setItem('bobUsers', JSON.stringify(users));
 
- // Vẫn giữ nguyên cách lưu user hiện tại để app chạy bình thường
- localStorage.setItem('bobUser', JSON.stringify(user));
+    // Lưu user hiện tại
+    localStorage.setItem('bobUser', JSON.stringify(user));
 
- loadApp();
+    alert("✅ Đăng ký thành công! Chào mừng bạn đến với BobShark.");
+    loadApp();   // Tự động vào trang chính
 }
 
 function fakeLogin(){
- const u = JSON.parse(localStorage.getItem('bobUser')||'null');
- if(!u){alert('Chưa có tài khoản');return;}
- if(document.getElementById('loginUser').value === u.username && document.getElementById('loginPass').value === u.password){
-   loadApp();
- }else{
-   alert('Sai tài khoản hoặc mật khẩu');
- }
+    const username = document.getElementById('loginUser').value.trim();
+    const password = document.getElementById('loginPass').value.trim();
+    const u = JSON.parse(localStorage.getItem('bobUser') || 'null');
+
+    if(!u || username !== u.username || password !== u.password){
+        alert('Sai tài khoản hoặc mật khẩu!');
+        return;
+    }
+    loadApp();
 }
 
 // ====================== ADMIN ======================
-function registerAdmin(){
- const name = document.getElementById('adminRegName').value.trim();
- const username = document.getElementById('adminRegUser').value.trim();
- const password = document.getElementById('adminRegPass').value.trim();
-
- if(!name || !username || !password) return alert("Vui lòng điền đầy đủ thông tin!");
-
- let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
- if(admins.some(a => a.username === username)) return alert("Tên đăng nhập Admin đã tồn tại!");
-
- admins.push({name, username, password, role:"admin", createdAt: new Date().toISOString()});
- localStorage.setItem('bobAdmins', JSON.stringify(admins));
- alert("✅ Đăng ký Admin thành công!");
- showAuth('adminLoginBox', document.querySelectorAll('.tab')[3]);
-}
-
 function loginAdmin(){
- const username = document.getElementById('adminLoginUser').value.trim();
- const password = document.getElementById('adminLoginPass').value.trim();
+    const username = document.getElementById('adminLoginUser').value.trim();
+    const password = document.getElementById('adminLoginPass').value.trim();
 
- let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
- const admin = admins.find(a => a.username === username && a.password === password);
+    let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
+    const admin = admins.find(a => a.username === username && a.password === password);
 
- if(admin){
-   localStorage.setItem('currentAdmin', JSON.stringify(admin));
-   window.location.href = 'admin.html';
- }else{
-   alert('Sai thông tin Admin');
- }
+    if(admin){
+        localStorage.setItem('currentAdmin', JSON.stringify(admin));
+        window.location.href = 'admin.html';
+    } else {
+        alert('❌ Sai thông tin Admin');
+    }
 }
 
-// Các hàm cũ giữ nguyên
-async function loadApp(){ /* ... giữ nguyên code cũ của bạn ... */ }
-async function getUnlockedDay(){ /* ... */ }
-async function renderDays(){ /* ... */ }
-let currentTask=0;
-function openTask(i){ /* ... */ }
-function completeTask(){ /* ... */ }
-function analyze(){ /* ... */ }
-function openGacha(){ /* ... */ }
-function closeGacha(){ /* ... */ }
-function openAdminLogin(){ /* ... */ }
-function closeAdminLogin(){ /* ... */ }
-function checkAdmin(){ /* ... */ }
+// Load trang chính
+async function loadApp(){
+    const user = JSON.parse(localStorage.getItem('bobUser'));
+    if(!user) return;
 
-window.onload=()=>{
- if(localStorage.getItem('bobUser')) loadApp();
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('authPage').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+
+    const now = await getInternetDate();
+    document.getElementById('welcome').innerText = `Xin chào ${user.name} 👋`;
+    document.getElementById('today').innerText = `📅 ${now.toLocaleDateString('vi-VN')}`;
+    document.getElementById('stars').innerText = `⭐ Sao: ${user.stars}`;
+
+    renderDays();
+}
+
+async function renderDays(){
+    // Bạn có thể bổ sung đầy đủ hàm này sau
+    console.log("Đang render 7 ngày...");
+}
+
+function openGacha(){ document.getElementById('modal').style.display = 'flex'; }
+function closeGacha(){ document.getElementById('modal').style.display = 'none'; }
+
+// Tự động kiểm tra khi load trang
+window.onload = () => {
+    const user = localStorage.getItem('bobUser');
+    if(user){
+        loadApp();        // Đã có tài khoản → vào thẳng app
+    }
 };
 </script>
 </body>
