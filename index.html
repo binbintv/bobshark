@@ -41,7 +41,9 @@ body{
     0 0 30px rgba(0,0,0,.4),
     0 0 80px rgba(0,119,255,.2);
 
-    animation:fadeUp 1s ease;
+   animation:fadeUp 1s ease, glow 2s infinite alternate;
+    border:2px solid rgba(255,255,255,.3);
+background:rgba(0,0,0,.45);
 }
 
 .logo-title{
@@ -72,6 +74,16 @@ body{
     to{
         opacity:1;
         transform:translateY(0);
+    }
+}
+
+@keyframes glow{
+    from{
+        box-shadow:0 0 20px rgba(255,255,255,.2);
+    }
+
+    to{
+        box-shadow:0 0 40px rgba(0,174,255,.8);
     }
 }
 .btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000}
@@ -245,7 +257,7 @@ Quên mật khẩu?
     </div>
 
 </div>
-<footer class="footer">
+<footer class="footer" id="footer" style="display:none;">
     <p>Admin: nguyennhatnem2009@gmail.com | Hotline: 0347961309</p>
     <p><i>Design by Cubinzz</i></p>
 </footer>
@@ -355,6 +367,7 @@ async function loadApp(){
 
     document.getElementById('stars').innerText =
         `⭐ Đã đăng nhập thành công`;
+    document.getElementById("footer").style.display = "block";
 
     // ADMIN
     if(user.email === "nguyennhatnem2009@gmail.com"){
@@ -477,10 +490,11 @@ window.onload = () => {
 
     document.getElementById("introVideo").onended = function(){
 
-        document.getElementById("heroContent")
-        .style.display = "block";
+    document.getElementById("heroContent").style.display = "block";
 
-    };
+    document.getElementById("footer").style.display = "block";
+
+  };
 
 };
 </script>
