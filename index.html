@@ -54,14 +54,6 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </style>
 </head>
 <body>
-
-<div id="intro">
-    <div class="fish" style="top:20%">🐟🐟🐟</div>
-    <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
-    <div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
-    <div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
-    <div class="hero">
-        <h1>🦈 BOBSHARK</h1>
 <div id="adminBadge"
 style="display:none;
 background:red;
@@ -72,6 +64,14 @@ font-weight:bold;
 float:right;">
 👑 ADMIN
 </div>
+<div id="intro">
+    <div class="fish" style="top:20%">🐟🐟🐟</div>
+    <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
+    <div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
+    <div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
+    <div class="hero">
+        <h1>🦈 BOBSHARK</h1>
+
         <p>Đồng hành cùng Bob khai phá tương lai</p>
         <button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
     </div>
@@ -268,8 +268,10 @@ async function loadApp(){
 
         localStorage.setItem("adminRank","true");
 
-        document.getElementById("adminBadge")
-            .style.display = "block";
+        document.getElementById("adminBadge").style.display = "block";
+
+document.getElementById("adminBadge").innerHTML =
+"👑 ADMIN";
 
     }else{
 
@@ -278,7 +280,12 @@ async function loadApp(){
     }
 }
 function logoutUser(){
+
+    document.getElementById("adminBadge")
+    .style.display = "none";
+
     auth.signOut().then(() => location.reload());
+
 }
 function loginAdmin(){
 
