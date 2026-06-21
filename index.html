@@ -92,9 +92,9 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
         <div id="adminLoginBox" class="auth-content">
             <div class="card">
                 <h2>👑 Đăng nhập Admin</h2>
-                <input id="adminLoginUser" placeholder="Tên đăng nhập Admin" value="admin">
+                <input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
                 <div class="password-container">
-                    <input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin" value="admin123">
+                    <input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
                     <span class="toggle-password" onclick="togglePassword('adminLoginPass', this)">👁️</span>
                 </div>
                 <button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
@@ -160,7 +160,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 <script>
 const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
 
-// Tự động tạo Admin
+// Tự động tạo Admin nếu chưa có
 function initAdmin() {
     let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
     if (admins.length === 0) {
@@ -200,7 +200,6 @@ function togglePassword(inputId, icon) {
     }
 }
 
-// Register
 async function register(){
     const name = document.getElementById('regName').value.trim();
     const username = document.getElementById('regUser').value.trim();
