@@ -2,70 +2,393 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>BobShark</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>BobShark AI</title>
+
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #0f2d35, #264d5a);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  color: white;
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
-.box {
-  text-align: center;
+body{
+background:linear-gradient(180deg,#4facfe,#003566);
+min-height:100vh;
+color:white;
 }
 
-h1 {
-  font-size: 56px;
-  margin: 8px 0;
+header{
+padding:20px;
+text-align:center;
 }
 
-p {
-  font-size: 20px;
-  opacity: 0.85;
+.logo{
+font-size:40px;
+animation:bounce 2s infinite;
 }
 
-/* cá heo */
-.dolphin {
-  width: 180px;
-  margin: 0 auto;
+@keyframes bounce{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
 }
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+}
+
+h2{
+margin-bottom:15px;
+}
+
+input,select{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+margin-top:8px;
+margin-bottom:15px;
+}
+
+button{
+background:#ffd60a;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.result{
+margin-top:15px;
+padding:15px;
+background:rgba(255,255,255,.2);
+border-radius:12px;
+}
+
+.days{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:10px;
+}
+
+.day{
+padding:15px;
+border-radius:12px;
+background:rgba(255,255,255,.15);
+text-align:center;
+cursor:pointer;
+}
+
+.day.done{
+background:#00c853;
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+color:black;
+padding:25px;
+border-radius:20px;
+max-width:400px;
+text-align:center;
+}
+
+.footer{
+text-align:center;
+padding:20px;
+opacity:.8;
+}
+
 </style>
 </head>
 
 <body>
-<div class="box">
 
-  <!-- CÁ HEO -->
-  <svg class="dolphin" viewBox="0 0 300 120">
-    <!-- thân -->
-    <path d="M20 70
-             C80 10, 180 10, 240 60
-             C260 75, 290 65, 280 50
-             C270 40, 250 45, 240 50
-             C210 90, 120 100, 60 85
-             C40 80, 25 75, 20 70 Z"
-          fill="#9ad9f0"/>
+<header>
+<div class="logo">🦈</div>
+<h1>BobShark AI</h1>
+<p>Đồng hành cùng bạn khám phá tương lai</p>
+</header>
 
-    <!-- vây -->
-    <path d="M120 70
-             C100 95, 130 100, 150 85 Z"
-          fill="#7fc6e0"/>
+<div class="container">
 
-    <!-- mắt -->
-    <circle cx="190" cy="50" r="4" fill="#000"/>
-  </svg>
+<div class="card">
 
-  <!-- TÊN -->
-  <h1>BobShark</h1>
-  <p>“Đồng hành cùng Bob khai phá tương lai”</p>
+<h2>Thông tin cá nhân</h2>
+
+<input
+id="name"
+placeholder="Nhập họ và tên"
+/>
+
+<select id="interest">
+<option>Công nghệ</option>
+<option>Y tế</option>
+<option>Kinh doanh</option>
+<option>Thiết kế</option>
+<option>Giáo dục</option>
+</select>
+
+<button onclick="analyze()">
+🚀 Phân tích nghề nghiệp
+</button>
+
+<div
+id="result"
+class="result"
+style="display:none"
+></div>
 
 </div>
+
+<div class="card">
+
+<h2>📅 Hành trình 7 ngày</h2>
+
+<div class="days" id="days"></div>
+
+</div>
+
+<div class="card">
+
+<h2>🎁 Gacha</h2>
+
+<button onclick="openGacha()">
+Mở Gacha
+</button>
+
+</div>
+
+</div>
+
+<div class="footer">
+BobShark AI MVP 2026
+</div>
+
+<div class="modal" id="modal">
+
+<div class="modal-content">
+
+<h2>🦈 BobShark</h2>
+
+<p>
+
+Ôi khôngggg 😵‍💫
+
+<br><br>
+
+Xưởng chế tạo quà của Bob
+đang được nâng cấp.
+
+<br><br>
+
+Tính năng Gacha hiện đang bảo trì 🚧
+
+<br><br>
+
+Hãy tiếp tục hoàn thành nhiệm vụ
+để tích lũy sao nhé ⭐
+
+</p>
+
+<br>
+
+<button onclick="closeGacha()">
+Đã hiểu
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const careerMap = {
+"Công nghệ":{
+career:"Công nghệ thông tin",
+school:"UIT, Bách Khoa, FPT"
+},
+"Y tế":{
+career:"Y khoa",
+school:"ĐH Y Dược TP.HCM"
+},
+"Kinh doanh":{
+career:"Marketing",
+school:"UEH"
+},
+"Thiết kế":{
+career:"Thiết kế đồ họa",
+school:"Văn Lang"
+},
+"Giáo dục":{
+career:"Sư phạm",
+school:"ĐH Sư phạm TP.HCM"
+}
+};
+
+function analyze(){
+
+const name =
+document.getElementById("name").value;
+
+const interest =
+document.getElementById("interest").value;
+
+if(name.trim()===""){
+alert("Vui lòng nhập họ tên");
+return;
+}
+
+localStorage.setItem(
+"bob_name",
+name
+);
+
+localStorage.setItem(
+"bob_interest",
+interest
+);
+
+const data =
+careerMap[interest];
+
+const result =
+document.getElementById("result");
+
+result.style.display="block";
+
+result.innerHTML=`
+
+<h3>Xin chào ${name} 👋</h3>
+
+<p>
+
+🦈 BobShark đã phân tích xong!
+
+</p>
+
+<br>
+
+<b>Ngành phù hợp:</b>
+
+${data.career}
+
+<br><br>
+
+<b>Trường gợi ý:</b>
+
+${data.school}
+
+<br><br>
+
+⭐ Mức độ phù hợp:
+${Math.floor(Math.random()*10)+90}%
+
+`;
+
+}
+
+const daysContainer =
+document.getElementById("days");
+
+for(let i=1;i<=7;i++){
+
+const div =
+document.createElement("div");
+
+div.className="day";
+
+div.innerHTML=
+`
+Ngày ${i}
+<br>
+🔒
+`;
+
+div.onclick=()=>{
+
+div.classList.toggle("done");
+
+if(div.classList.contains("done")){
+
+div.innerHTML=
+`
+Ngày ${i}
+<br>
+✅
+`;
+
+}else{
+
+div.innerHTML=
+`
+Ngày ${i}
+<br>
+🔒
+`;
+
+}
+
+};
+
+daysContainer.appendChild(div);
+
+}
+
+function openGacha(){
+document.getElementById("modal")
+.style.display="flex";
+}
+
+function closeGacha(){
+document.getElementById("modal")
+.style.display="none";
+}
+
+window.onload=()=>{
+
+const name=
+localStorage.getItem("bob_name");
+
+if(name){
+
+document.getElementById("name")
+.value=name;
+
+}
+
+};
+
+</script>
+
 </body>
 </html>
