@@ -2,109 +2,201 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>BẢNG PHONG THẦN - Đấng</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BobShark - Quản Trị Admin</title>
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background: #0b3d91;
-    padding: 20px;
-    color: white;
-    margin: 0;
-}
-h1{
-    text-align: center;
-    margin-bottom: 30px;
-}
-.card{
-    background: rgba(255,255,255,0.1);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-table{
-    width:100%;
-    border-collapse: collapse;
-    background: white;
-    color: black;
-    border-radius: 8px;
-    overflow: hidden;
-}
-th,td{
-    padding: 14px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-th{
-    background: #1976ff;
-    color: white;
-}
-.btn{
-    padding: 12px 24px;
-    background: #ffd60a;
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px 5px;
-}
+    body {
+        margin: 0;
+        font-family: Segoe UI, sans-serif;
+        background: linear-gradient(180deg, #001d3d, #003566);
+        color: #fff;
+        min-height: 100vh;
+    }
+    .header {
+        background: rgba(0,0,0,0.3);
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .header h1 {
+        margin: 0;
+        font-size: 28px;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+    .card {
+        background: rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255,255,255,0.05);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 16px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    th {
+        background: #1976ff;
+        color: white;
+    }
+    tr:hover {
+        background: rgba(255,255,255,0.1);
+    }
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 5px;
+    }
+    .btn-primary { background: #ffd60a; color: #000; }
+    .btn-danger { background: #ef4444; color: white; }
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .stat-card {
+        background: rgba(255,255,255,0.1);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+    }
+    .stat-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #ffd60a;
+    }
+    .footer {
+        text-align: center;
+        padding: 20px;
+        opacity: 0.7;
+        font-size: 14px;
+    }
 </style>
 </head>
 <body>
 
-<h1>👑 BẢNG PHONG THẦN</h1>
-
-<div class="card">
-    <button class="btn" onclick="loadUsers()">🔄 Tải lại dữ liệu</button>
-    <button class="btn" onclick="logoutAdmin()" style="background:#ef4444;color:white">Đăng xuất Admin</button>
+<div class="header">
+    <h1>👑 BobShark - Quản Trị Admin</h1>
+    <button class="btn btn-danger" onclick="logoutAdmin()">Đăng xuất</button>
 </div>
 
-<table>
-<thead>
-<tr>
-    <th>Tên</th>
-    <th>Username</th>
-    <th>Ngày sinh</th>
-    <th>Ngày tham gia</th>
-    <th>Sao</th>
-    <th>Tiến độ</th>
-</tr>
-</thead>
-<tbody id="userTable"></tbody>
-</table>
+<div class="container">
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="totalUsers">0</div>
+            <div>Tổng Người Dùng</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="totalStars">0</div>
+            <div>Tổng Sao</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="completedUsers">0</div>
+            <div>Hoàn thành 7 ngày</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📋 Danh sách Người dùng</h2>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Tên</th>
+                    <th>Username</th>
+                    <th>Ngày Sinh</th>
+                    <th>Ngày Tham Gia</th>
+                    <th>Sao</th>
+                    <th>Tiến Độ</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <button class="btn btn-danger" onclick="resetAllData()">🗑️ Reset Toàn Bộ Dữ Liệu</button>
+        <button class="btn btn-primary" onclick="loadUsers()">🔄 Tải Lại Dữ Liệu</button>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>BobShark Admin Panel • Made by Team Siêu Quậy</p>
+</footer>
 
 <script>
-// Load users từ localStorage (phù hợp với index.html)
-function loadUsers(){
+// Load dữ liệu
+function loadUsers() {
     const users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
-    const tbody = document.getElementById('userTable');
+    const tbody = document.querySelector('#userTable tbody');
     tbody.innerHTML = '';
 
-    if(users.length === 0){
-        tbody.innerHTML = `<tr><td colspan="6" style="color:#666; padding:30px;">Chưa có người dùng nào</td></tr>`;
-        return;
-    }
+    let totalStars = 0;
+    let completed = 0;
 
-    users.forEach(user => {
+    users.forEach((user, index) => {
         const progress = user.progress ? user.progress.filter(Boolean).length : 0;
-        const startDate = user.startDate ? new Date(user.startDate).toLocaleDateString('vi-VN') : 'Chưa có';
-        
-        const row = `
-            <tr>
-                <td>${user.name || 'Không tên'}</td>
-                <td>${user.username || ''}</td>
-                <td>${user.birth ? new Date(user.birth).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</td>
-                <td>${startDate}</td>
-                <td><strong>${user.stars || 0}</strong> ⭐</td>
-                <td>${progress}/7</td>
-            </tr>
+        if(progress === 7) completed++;
+        totalStars += user.stars || 0;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.name || 'Không tên'}</td>
+            <td>${user.username}</td>
+            <td>${user.birth ? new Date(user.birth).toLocaleDateString('vi-VN') : '-'}</td>
+            <td>${new Date(user.startDate).toLocaleDateString('vi-VN')}</td>
+            <td><strong>${user.stars || 0}</strong> ⭐</td>
+            <td>${progress}/7</td>
+            <td>
+                <button class="btn btn-danger" onclick="deleteUser(${index})" style="padding:5px 10px;font-size:12px;">Xóa</button>
+            </td>
         `;
-        tbody.innerHTML += row;
+        tbody.appendChild(row);
     });
+
+    document.getElementById('totalUsers').textContent = users.length;
+    document.getElementById('totalStars').textContent = totalStars;
+    document.getElementById('completedUsers').textContent = completed;
 }
 
-function logoutAdmin(){
-    if(confirm("Đăng xuất Admin?")){
+function deleteUser(index) {
+    if(confirm("Bạn có chắc muốn xóa người dùng này?")) {
+        let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
+        users.splice(index, 1);
+        localStorage.setItem('bobUsers', JSON.stringify(users));
+        loadUsers();
+    }
+}
+
+function resetAllData() {
+    if(confirm("⚠️ Bạn có chắc muốn XÓA TOÀN BỘ dữ liệu người dùng? Hành động này không thể hoàn tác!")) {
+        localStorage.removeItem('bobUsers');
+        localStorage.removeItem('bobUser');
+        alert("Đã reset toàn bộ dữ liệu!");
+        loadUsers();
+    }
+}
+
+function logoutAdmin() {
+    if(confirm("Đăng xuất khỏi Admin?")) {
         localStorage.removeItem('currentAdmin');
         window.location.href = 'index.html';
     }
