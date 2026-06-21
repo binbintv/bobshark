@@ -109,8 +109,7 @@ float:right;">
                 </div>
                 <button class="btn" onclick="loginWithFirebase()">Đăng nhập</button>
                 <p style="margin-top:10px;">
-<a href="#" onclick="forgotPassword()"
-style="color:#ffd60a;text-decoration:none;">
+<a href="#" onclick="openForgotModal()">
 Quên mật khẩu?
 </a>
 </p>
@@ -307,8 +306,8 @@ function loginAdmin(){
 function startJourney(){
     window.location.href = "trangchu.html";
 }
-window.onload = () => {
-    async function forgotPassword(){
+
+async function forgotPassword(){
 
     const email =
     document.getElementById("loginEmail").value.trim();
@@ -319,7 +318,6 @@ window.onload = () => {
     }
 
     try{
-
         await auth.sendPasswordResetEmail(email);
 
         alert(
@@ -327,21 +325,72 @@ window.onload = () => {
         );
 
     }catch(error){
-
         alert("Lỗi: " + error.message);
-
     }
 }
+
+window.onload = () => {
+
     auth.onAuthStateChanged(user => {
+
         if(user){
             loadApp();
         }else{
-            document.getElementById('intro').style.display = 'block';
+            document.getElementById('intro').style.display='block';
             document.getElementById('authPage').classList.add('hidden');
             document.getElementById('app').classList.add('hidden');
         }
+
     });
+
 };
 </script>
+<div id="forgotModal"
+style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+<div style="
+background:white;
+color:black;
+padding:25px;
+border-radius:15px;
+width:350px;
+">
+
+<h3>Quên mật khẩu</h3>
+
+<input
+id="forgotEmail"
+type="email"
+placeholder="Nhập email của bạn"
+style="
+width:100%;
+padding:10px;
+margin:10px 0;
+">
+
+<button class="btn"
+onclick="sendResetEmail()">
+📧 Gửi
+</button>
+
+<button class="btn"
+style="background:#ef4444;color:white;"
+onclick="closeForgotModal()">
+❌ Hủy
+</button>
+
+</div>
+</div>
 </body>
 </html>
