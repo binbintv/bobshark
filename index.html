@@ -8,7 +8,64 @@
 body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
 .hidden{display:none}
 #intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
-.hero{position:absolute;top:40%;width:100%;text-align:center}
+.hero{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:100%;
+    text-align:center;
+}
+
+.hero-box{
+    display:inline-block;
+    padding:40px 50px;
+
+    background:rgba(0,0,0,.35);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    border-radius:25px;
+
+    box-shadow:
+    0 0 30px rgba(0,0,0,.4),
+    0 0 80px rgba(0,119,255,.2);
+
+    animation:fadeUp 1s ease;
+}
+
+.logo-title{
+    font-size:55px;
+    margin:0;
+    font-weight:800;
+    text-shadow:0 0 20px rgba(255,255,255,.4);
+}
+
+.hero-text{
+    margin-top:15px;
+    font-size:22px;
+    opacity:.95;
+}
+
+.start-btn{
+    margin-top:20px;
+    font-size:18px;
+    padding:15px 35px;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 .btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000}
 .card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
@@ -80,12 +137,24 @@ object-fit:cover;
 ">
 <source src="intro.mp4" type="video/mp4">
 </video>
-    <div class="hero" id="heroContent" style="display:none;">
-        <h1>🦈 BOBSHARK</h1>
+   <div class="hero" id="heroContent" style="display:none;">
 
-        <p>Đồng hành cùng Bob khai phá tương lai</p>
-        <button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
+    <div class="hero-box">
+
+        <h1 class="logo-title">
+            🦈 BOBSHARK
+        </h1>
+
+        <p class="hero-text">
+            Đồng hành cùng Bob khai phá tương lai
+        </p>
+
+        <button class="btn start-btn" onclick="showRegister()">
+            🚀 Bắt đầu hành trình
+        </button>
+
     </div>
+
 </div>
 
 <div id="authPage" class="hidden">
