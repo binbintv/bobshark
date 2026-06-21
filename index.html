@@ -30,11 +30,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .toggle-password {position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;}
 .footer{text-align:center;padding:15px;font-size:13px;opacity:0.8;margin-top:20px}
 .footer i{font-style:italic}
-.logout-btn {
-    background:#ef4444;
-    color:white;
-    float:right;
-}
+.logout-btn {background:#ef4444;color:white;float:right;}
 </style>
 </head>
 <body>
@@ -52,7 +48,6 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </div>
 
 <div id="authPage" class="hidden">
-    <!-- Phần auth giữ nguyên -->
     <div class="card">
         <div class="tabs">
             <button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
@@ -108,7 +103,6 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
         <p id="today"></p>
         <p id="stars"></p>
     </div>
-
     <div class="card">
         <h2>🎯 Phân tích nghề nghiệp</h2>
         <select id="job">
@@ -121,12 +115,10 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
         <button class="btn" onclick="analyze()">Phân tích</button>
         <div id="analysis"></div>
     </div>
-
     <div class="card">
         <h2>📅 Hành trình 7 ngày</h2>
         <div id="days" class="days"></div>
     </div>
-
     <div class="card">
         <h2>🎁 Gacha</h2>
         <button class="btn" onclick="openGacha()">Mở Gacha</button>
@@ -155,7 +147,24 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
     <p>Admin: admin@bobshark.vn | Hotline: 0123 456 789</p>
 </footer>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+
 <script>
+// Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
+    authDomain: "bobshark-fbdfb.firebaseapp.com",
+    projectId: "bobshark-fbdfb",
+    storageBucket: "bobshark-fbdfb.firebasestorage.app",
+    messagingSenderId: "810024180746",
+    appId: "1:810024180746:web:4419819dff374b5a04d3f3"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
 
 function showRegister(){
@@ -181,26 +190,37 @@ function togglePassword(inputId, icon){
     }
 }
 
+// ================== ĐĂNG KÝ - LƯU FIREBASE ==================
 async function register(){
+    const name = document.getElementById('regName').value.trim();
     const username = document.getElementById('regUser').value.trim();
     const password = document.getElementById('regPass').value.trim();
+    const birth = document.getElementById('birth').value;
+
     if(!username || !password){
         alert("Vui lòng nhập tên đăng nhập và mật khẩu!");
         return;
     }
+
     const user = {
-        name: document.getElementById('regName').value.trim() || "Bob",
+        name: name || "Bob",
         username: username,
         password: password,
-        birth: document.getElementById('birth').value,
+        birth: birth,
         startDate: new Date().toISOString(),
         stars: 0,
         progress: [false,false,false,false,false,false,false],
         analysisScores: {}
     };
-    localStorage.setItem('bobUser', JSON.stringify(user));
-    alert("✅ Đăng ký thành công!");
-    loadApp();
+
+    try {
+        await db.collection("users").add(user);           // Lưu lên Firebase
+        localStorage.setItem('bobUser', JSON.stringify(user));
+        alert("✅ Đăng ký thành công! Dữ liệu đã lưu trên Cloud.");
+        loadApp();
+    } catch(e) {
+        alert("Lỗi kết nối Firebase: " + e.message);
+    }
 }
 
 function fakeLogin(){
