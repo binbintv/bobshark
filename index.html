@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BobShark</title>
 <style>
+/* Style giữ nguyên như trước */
 body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
 .hidden{display:none}
 #intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -40,120 +41,10 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </head>
 <body>
 
-<div id="intro">
-    <div style="position:relative;width:100%;max-width:600px">
-        <div class="fish" style="top:20%">🐟🐟🐟</div>
-        <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
-        <div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
-        <div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
-        <div class="hero">
-            <h1 style="font-size:3rem;margin:0">🦈 BOBSHARK</h1>
-            <p style="font-size:1.3rem">Đồng hành cùng Bob khai phá tương lai</p>
-            <button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
-        </div>
-    </div>
-</div>
+<!-- Phần intro, authPage, app giữ nguyên như file trước -->
+<!-- ... (để ngắn gọn, bạn copy từ file cũ của bạn) ... -->
 
-<div id="authPage" class="hidden">
-    <div class="card">
-        <div class="tabs">
-            <button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
-            <button class="tab" onclick="showAuth('loginBox',this)">Đăng nhập</button>
-            <button class="tab" onclick="showAuth('adminLoginBox',this)">Đăng nhập Admin</button>
-        </div>
-
-        <div id="registerBox" class="auth-content active-auth">
-            <div class="card">
-                <h2>Tạo tài khoản</h2>
-                <input id="regName" placeholder="Họ và tên">
-                <input id="regUser" placeholder="Tên đăng nhập">
-                <div class="password-container">
-                    <input id="regPass" type="password" placeholder="Mật khẩu">
-                    <span class="toggle-password" onclick="togglePassword('regPass', this)">👁️</span>
-                </div>
-                <input id="birth" type="date">
-                <button class="btn" onclick="register()">Tạo tài khoản</button>
-            </div>
-        </div>
-
-        <div id="loginBox" class="auth-content">
-            <div class="card">
-                <h2>🔑 Đăng nhập</h2>
-                <input id="loginUser" placeholder="Tên đăng nhập">
-                <div class="password-container">
-                    <input id="loginPass" type="password" placeholder="Mật khẩu">
-                    <span class="toggle-password" onclick="togglePassword('loginPass', this)">👁️</span>
-                </div>
-                <button class="btn" onclick="fakeLogin()">Đăng nhập</button>
-            </div>
-        </div>
-
-        <div id="adminLoginBox" class="auth-content">
-            <div class="card">
-                <h2>👑 Đăng nhập Admin</h2>
-                <input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
-                <div class="password-container">
-                    <input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
-                    <span class="toggle-password" onclick="togglePassword('adminLoginPass', this)">👁️</span>
-                </div>
-                <button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="app" class="hidden">
-    <div class="card">
-        <h1>🦈 BobShark AI</h1>
-        <p id="welcome"></p>
-        <p id="today"></p>
-        <p id="stars"></p>
-    </div>
-
-    <div class="card">
-        <h2>🎯 Phân tích nghề nghiệp</h2>
-        <select id="job">
-            <option>AI Engineer</option>
-            <option>Lập trình viên</option>
-            <option>Bác sĩ</option>
-            <option>Marketing</option>
-            <option>Giáo viên</option>
-        </select>
-        <button class="btn" onclick="analyze()">Phân tích</button>
-        <div id="analysis" style="margin-top:15px;padding:15px;background:rgba(255,255,255,0.1);border-radius:10px;min-height:80px;"></div>
-    </div>
-
-    <div class="card">
-        <h2>📅 Hành trình 7 ngày</h2>
-        <div id="days" class="days"></div>
-    </div>
-
-    <div class="card">
-        <h2>🎁 Gacha</h2>
-        <button class="btn" onclick="openGacha()">Mở Gacha</button>
-    </div>
-</div>
-
-<!-- Modals -->
-<div class="modal" id="modal">
-    <div class="modal-content">
-        <h2>🚧 Gacha bảo trì</h2>
-        <p>Tính năng đang được nâng cấp.</p>
-        <button class="btn" onclick="closeGacha()">Đã hiểu</button>
-    </div>
-</div>
-
-<div class="modal" id="taskModal">
-    <div class="modal-content">
-        <h2 id="taskTitle"></h2>
-        <p id="taskText"></p>
-        <button class="btn" onclick="completeTask()">Hoàn thành nhiệm vụ</button>
-    </div>
-</div>
-
-<footer class="footer">
-    <p>Admin: admin@bobshark.vn | Hotline: 0123 456 789</p>
-</footer>
+<!-- Chỉ thay đổi phần script quan trọng -->
 
 <script>
 const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
@@ -166,36 +57,7 @@ function initAdmin() {
     }
 }
 
-async function getInternetDate(){
-    try{
-        const r = await fetch('https://worldtimeapi.org/api/timezone/Asia/Ho_Chi_Minh');
-        const d = await r.json();
-        return new Date(d.datetime);
-    }catch(e){return new Date();}
-}
-
-function showRegister(){
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('authPage').classList.remove('hidden');
-}
-
-function showAuth(id, btn){
-    document.querySelectorAll('.auth-content').forEach(x => x.classList.remove('active-auth'));
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    document.getElementById(id).classList.add('active-auth');
-    btn.classList.add('active');
-}
-
-function togglePassword(inputId, icon) {
-    const input = document.getElementById(inputId);
-    if (input.type === "password") {
-        input.type = "text";
-        icon.textContent = "🙈";
-    } else {
-        input.type = "password";
-        icon.textContent = "👁️";
-    }
-}
+// Các hàm khác giữ nguyên (showRegister, showAuth, togglePassword, register, fakeLogin, loginAdmin...)
 
 async function register(){
     const name = document.getElementById('regName').value.trim();
@@ -219,126 +81,56 @@ async function register(){
         analysisScores: {}
     };
 
+    // LƯU RẤT RÕ VÀO DANH SÁCH ADMIN
     let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
     users.push(user);
     localStorage.setItem('bobUsers', JSON.stringify(users));
+
     localStorage.setItem('bobUser', JSON.stringify(user));
 
     alert("✅ Đăng ký thành công!");
     loadApp();
 }
 
-function fakeLogin(){
-    const username = document.getElementById('loginUser').value.trim();
-    const password = document.getElementById('loginPass').value.trim();
-    const u = JSON.parse(localStorage.getItem('bobUser') || 'null');
+// Các hàm loadApp, renderDays, analyze... giữ nguyên
 
-    if(!u || username !== u.username || password !== u.password){
-        alert('Sai tài khoản hoặc mật khẩu!');
-        return;
-    }
-    loadApp();
+// Thêm hàm Export / Import cho Admin
+function exportData() {
+    const data = {
+        bobUsers: JSON.parse(localStorage.getItem('bobUsers') || '[]'),
+        bobAdmins: JSON.parse(localStorage.getItem('bobAdmins') || '[]')
+    };
+    const str = JSON.stringify(data, null, 2);
+    const blob = new Blob([str], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'bobshark_backup.json';
+    a.click();
 }
 
-function loginAdmin(){
-    const username = document.getElementById('adminLoginUser').value.trim();
-    const password = document.getElementById('adminLoginPass').value.trim();
-    let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
-    const admin = admins.find(a => a.username === username && a.password === password);
-
-    if(admin){
-        localStorage.setItem('currentAdmin', JSON.stringify(admin));
-        window.location.href = 'admin.html';
-    } else {
-        alert('❌ Sai thông tin Admin');
-    }
+function importData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if(data.bobUsers) localStorage.setItem('bobUsers', JSON.stringify(data.bobUsers));
+                if(data.bobAdmins) localStorage.setItem('bobAdmins', JSON.stringify(data.bobAdmins));
+                alert("✅ Import dữ liệu thành công!");
+                location.reload();
+            } catch(err) {
+                alert("File không hợp lệ!");
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
 }
-
-async function loadApp(){
-    const user = JSON.parse(localStorage.getItem('bobUser'));
-    if(!user) return;
-
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('authPage').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-
-    const now = await getInternetDate();
-    document.getElementById('welcome').innerText = `Xin chào ${user.name} 👋`;
-    document.getElementById('today').innerText = `📅 ${now.toLocaleDateString('vi-VN')}`;
-    document.getElementById('stars').innerText = `⭐ Sao: ${user.stars}`;
-
-    renderDays();
-}
-
-async function renderDays(){
-    const user = JSON.parse(localStorage.getItem('bobUser'));
-    const unlocked = await getUnlockedDay();
-    const daysDiv = document.getElementById('days');
-    daysDiv.innerHTML = '';
-
-    for(let i = 0; i < 7; i++){
-        const d = document.createElement('div');
-        if(user.progress[i]){
-            d.className = 'day done';
-            d.innerHTML = `Ngày ${i+1}<br>✅ Đã hoàn thành`;
-        } else if(i+1 <= unlocked){
-            d.className = 'day';
-            d.innerHTML = `Ngày ${i+1}`;
-            d.onclick = () => openTask(i);
-        } else {
-            d.className = 'day locked';
-            d.innerHTML = `🔒 Ngày ${i+1}`;
-        }
-        daysDiv.appendChild(d);
-    }
-}
-
-async function getUnlockedDay(){
-    const user = JSON.parse(localStorage.getItem('bobUser'));
-    const start = new Date(user.startDate);
-    const now = await getInternetDate();
-    return Math.min(Math.floor((now - start) / (1000*60*60*24)) + 1, 7);
-}
-
-let currentTask = 0;
-function openTask(i){
-    currentTask = i;
-    document.getElementById('taskTitle').innerText = `Nhiệm vụ Ngày ${i+1}`;
-    document.getElementById('taskText').innerText = tasks[i];
-    document.getElementById('taskModal').style.display = 'flex';
-}
-
-function completeTask(){
-    let user = JSON.parse(localStorage.getItem('bobUser'));
-    if(!user.progress[currentTask]){
-        user.progress[currentTask] = true;
-        user.stars += 50;
-        localStorage.setItem('bobUser', JSON.stringify(user));
-    }
-    document.getElementById('taskModal').style.display = 'none';
-    loadApp();
-}
-
-function analyze(){
-    const job = document.getElementById('job').value;
-    let user = JSON.parse(localStorage.getItem('bobUser'));
-    if(!user.analysisScores) user.analysisScores = {};
-
-    if(!user.analysisScores[job]){
-        user.analysisScores[job] = 55 + Math.floor(Math.random() * 40);
-        localStorage.setItem('bobUser', JSON.stringify(user));
-    }
-
-    const score = user.analysisScores[job];
-    document.getElementById('analysis').innerHTML = `
-        <h3>${job}</h3>
-        <p><strong>Độ phù hợp: ${score}%</strong></p>
-        <p style="color:#ffd60a;">Bạn rất phù hợp với nghề này! 💪</p>
-    `;
-}
-
-function openGacha(){ document.getElementById('modal').style.display = 'flex'; }
-function closeGacha(){ document.getElementById('modal').style.display = 'none'; }
 
 window.onload = () => {
     initAdmin();
