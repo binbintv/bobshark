@@ -5,33 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BobShark</title>
 <style>
-body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    font-family:Segoe UI,sans-serif;
-    background:linear-gradient(180deg,#001d3d,#003566,#0077b6);
-    color:#fff;
-}
+body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
 .hidden{display:none}
-#authPage{
-    flex:1;
-    width:100%;
-}
 #intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
 .fish{position:absolute;font-size:28px;animation:swim 12s linear infinite}
 @keyframes swim{from{left:-20%}to{left:120%}}
 .hero{position:absolute;top:40%;width:100%;text-align:center}
 .btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000}
-.card{
-    width:98%;
-    margin:20px auto;
-    background:rgba(255,255,255,.12);
-    padding:25px;
-    border-radius:16px;
-    box-sizing:border-box;
-}
+.card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
 .day{padding:15px;border-radius:10px;text-align:center;background:#2563eb;cursor:pointer}
@@ -47,17 +28,12 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .password-container { position: relative; }
 .password-container input { padding-right: 45px; }
 .toggle-password {position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;}
-.footer{
-    text-align:center;
-    padding:20px;
-    font-size:13px;
-    opacity:0.8;
-    margin-top:auto;
-}
+.footer{text-align:center;padding:15px;font-size:13px;opacity:0.8;margin-top:20px}
 .footer i{font-style:italic}
 </style>
 </head>
 <body>
+
 <div id="intro">
     <div class="fish" style="top:20%">🐟🐟🐟</div>
     <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
@@ -78,79 +54,44 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
             <button class="tab" onclick="showAuth('adminLoginBox',this)">Đăng nhập Admin</button>
         </div>
 
-       <div id="registerBox" class="auth-content active-auth">
+        <div id="registerBox" class="auth-content active-auth">
+            <div class="card">
+                <h2>Tạo tài khoản</h2>
+                <input id="regEmail" type="email" placeholder="Email">
+                <input id="regName" placeholder="Họ và tên">
+                <div class="password-container">
+                    <input id="regPass" type="password" placeholder="Mật khẩu">
+                    <span class="toggle-password" onclick="togglePassword('regPass', this)">👁️</span>
+                </div>
+                <input id="birth" type="date">
+                <button class="btn" onclick="registerWithFirebase()">Tạo tài khoản</button>
+            </div>
+        </div>
 
-    <h2>Tạo tài khoản</h2>
+        <div id="loginBox" class="auth-content">
+            <div class="card">
+                <h2>🔑 Đăng nhập</h2>
+                <input id="loginEmail" type="email" placeholder="Email">
+                <div class="password-container">
+                    <input id="loginPass" type="password" placeholder="Mật khẩu">
+                    <span class="toggle-password" onclick="togglePassword('loginPass', this)">👁️</span>
+                </div>
+                <button class="btn" onclick="loginWithFirebase()">Đăng nhập</button>
+            </div>
+        </div>
 
-    <input id="regEmail" type="email" placeholder="Email">
-
-    <input id="regName" placeholder="Họ và tên">
-
-    <div class="password-container">
-        <input id="regPass" type="password" placeholder="Mật khẩu">
-        <span class="toggle-password"
-        onclick="togglePassword('regPass', this)">👁️</span>
+        <div id="adminLoginBox" class="auth-content">
+            <div class="card">
+                <h2>👑 Đăng nhập Admin</h2>
+                <input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
+                <div class="password-container">
+                    <input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
+                    <span class="toggle-password" onclick="togglePassword('adminLoginPass', this)">👁️</span>
+                </div>
+                <button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
+            </div>
+        </div>
     </div>
-
-    <input id="birth" type="date">
-
-    <button class="btn"
-    onclick="registerWithFirebase()">
-    Tạo tài khoản
-    </button>
-
-</div>
-       <div id="loginBox" class="auth-content">
-
-    <h2>🔑 Đăng nhập</h2>
-
-    <input id="loginEmail"
-    type="email"
-    placeholder="Email">
-
-    <div class="password-container">
-        <input id="loginPass"
-        type="password"
-        placeholder="Mật khẩu">
-
-        <span class="toggle-password"
-        onclick="togglePassword('loginPass', this)">
-        👁️
-        </span>
-    </div>
-
-    <button class="btn"
-    onclick="loginWithFirebase()">
-    Đăng nhập
-    </button>
-
-</div>
-
-       <div id="adminLoginBox" class="auth-content">
-
-    <h2>👑 Đăng nhập Admin</h2>
-
-    <input id="adminLoginUser"
-    placeholder="Tên đăng nhập Admin">
-
-    <div class="password-container">
-
-        <input id="adminLoginPass"
-        type="password"
-        placeholder="Mật khẩu Admin">
-
-        <span class="toggle-password"
-        onclick="togglePassword('adminLoginPass', this)">
-        👁️
-        </span>
-
-    </div>
-
-    <button class="btn"
-    onclick="loginAdmin()">
-    Đăng nhập Admin
-    </button>
-
 </div>
 
 <div id="app" class="hidden">
