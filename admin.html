@@ -2,121 +2,116 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>BẢNG PHONG THẦN</title>
-
+<title>BẢNG PHONG THẦN - Admin</title>
 <style>
 body{
-font-family:Arial;
-background:#0b3d91;
-padding:20px;
-color:white;
+    font-family: Arial, sans-serif;
+    background: #0b3d91;
+    padding: 20px;
+    color: white;
+    margin: 0;
 }
-
 h1{
-text-align:center;
+    text-align: center;
+    margin-bottom: 30px;
 }
-
+.card{
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
 table{
-width:100%;
-border-collapse:collapse;
-background:white;
-color:black;
+    width:100%;
+    border-collapse: collapse;
+    background: white;
+    color: black;
+    border-radius: 8px;
+    overflow: hidden;
 }
-
 th,td{
-padding:12px;
-border:1px solid #ddd;
-text-align:center;
+    padding: 14px;
+    border: 1px solid #ddd;
+    text-align: center;
 }
-
 th{
-background:#1976ff;
-color:white;
+    background: #1976ff;
+    color: white;
+}
+.btn{
+    padding: 12px 24px;
+    background: #ffd60a;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 5px;
 }
 </style>
 </head>
-
 <body>
 
 <h1>👑 BẢNG PHONG THẦN</h1>
 
-<table>
+<div class="card">
+    <button class="btn" onclick="loadUsers()">🔄 Tải lại dữ liệu</button>
+    <button class="btn" onclick="logoutAdmin()" style="background:#ef4444;color:white">Đăng xuất Admin</button>
+</div>
 
+<table>
 <thead>
 <tr>
-<th>Tên</th>
-<th>Email</th>
-<th>Nghề</th>
-<th>Ngày sinh</th>
-<th>Sao</th>
+    <th>Tên</th>
+    <th>Username</th>
+    <th>Ngày sinh</th>
+    <th>Ngày tham gia</th>
+    <th>Sao</th>
+    <th>Tiến độ</th>
 </tr>
 </thead>
-
 <tbody id="userTable"></tbody>
-
 </table>
 
-<script type="module">
+<script>
+// Load users từ localStorage (phù hợp với index.html)
+function loadUsers(){
+    const users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
+    const tbody = document.getElementById('userTable');
+    tbody.innerHTML = '';
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    if(users.length === 0){
+        tbody.innerHTML = `<tr><td colspan="6" style="color:#666; padding:30px;">Chưa có người dùng nào</td></tr>`;
+        return;
+    }
 
-import {
-getFirestore,
-collection,
-getDocs
-}
-from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
-
-authDomain: "bobshark-fbdfb.firebaseapp.com",
-
-projectId: "bobshark-fbdfb",
-
-storageBucket: "bobshark-fbdfb.firebasestorage.app",
-
-messagingSenderId: "810024180746",
-
-appId: "1:810024180746:web:4419819dff374b5a04d3f3"
-
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-async function loadUsers(){
-
-const snapshot =
-await getDocs(collection(db,"users"));
-
-const table =
-document.getElementById("userTable");
-
-table.innerHTML="";
-
-snapshot.forEach(doc=>{
-
-const user = doc.data();
-
-table.innerHTML += `
-<tr>
-<td>${user.name||""}</td>
-<td>${user.email||""}</td>
-<td>${user.career||""}</td>
-<td>${user.birth||""}</td>
-<td>${user.stars||0}</td>
-</tr>
-`;
-
-});
-
+    users.forEach(user => {
+        const progress = user.progress ? user.progress.filter(Boolean).length : 0;
+        const startDate = user.startDate ? new Date(user.startDate).toLocaleDateString('vi-VN') : 'Chưa có';
+        
+        const row = `
+            <tr>
+                <td>${user.name || 'Không tên'}</td>
+                <td>${user.username || ''}</td>
+                <td>${user.birth ? new Date(user.birth).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</td>
+                <td>${startDate}</td>
+                <td><strong>${user.stars || 0}</strong> ⭐</td>
+                <td>${progress}/7</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
 }
 
-loadUsers();
+function logoutAdmin(){
+    if(confirm("Đăng xuất Admin?")){
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'index.html';
+    }
+}
 
+// Tự động load khi mở trang
+window.onload = loadUsers;
 </script>
 
 </body>
