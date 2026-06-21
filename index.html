@@ -3,129 +3,221 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BobShark MVP</title>
+<title>BobShark MVP Pro</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#0b3d91;color:white;overflow-x:hidden}
-#intro{position:fixed;inset:0;background:linear-gradient(#001d3d,#003566,#0077b6);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:9999}
+body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
+.hidden{display:none}
+.center{display:flex;justify-content:center;align-items:center}
+#intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
 .fish{position:absolute;font-size:28px;animation:swim 12s linear infinite}
-@keyframes swim{from{left:-10%}to{left:110%}}
-#title{font-size:48px;font-weight:bold;opacity:0;animation:fade 2s forwards 3s}
-#startBtn{opacity:0;animation:fade 2s forwards 5s;padding:15px 30px;border:none;border-radius:30px;background:#ffd60a;font-weight:bold;cursor:pointer}
-@keyframes fade{to{opacity:1}}
-.card{max-width:900px;margin:20px auto;padding:20px;background:rgba(255,255,255,.12);border-radius:16px}
+@keyframes swim{from{left:-20%}to{left:120%}}
+.hero{position:absolute;top:40%;width:100%;text-align:center}
+.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer}
+.card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
-button{padding:10px 16px;border:none;border-radius:8px;cursor:pointer}
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px}
-.day{padding:15px;background:#1f6feb;border-radius:10px;text-align:center;cursor:pointer}
-.done{background:#00a86b}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center}
-.modal-content{background:white;color:black;padding:20px;border-radius:15px;max-width:400px}
-canvas{position:absolute;inset:0}
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.day{padding:15px;border-radius:10px;text-align:center;background:#2563eb;cursor:pointer}
+.locked{background:#555}
+.done{background:#16a34a}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
+.modal-content{background:#fff;color:#000;padding:20px;border-radius:15px;max-width:500px}
 </style>
 </head>
 <body>
 
 <div id="intro">
-<canvas id="ocean"></canvas>
-<div class="fish" style="top:25%">🐟🐟🐟</div>
+<div class="fish" style="top:20%">🐟🐟🐟</div>
 <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
-<div class="fish" style="top:65%;animation-delay:4s">🐟🐟</div>
-<div style="font-size:80px;position:absolute;top:30%;animation:swim 8s linear 1">🐬</div>
-<div id="title">🦈 BOBSHARK AI</div>
-<p style="opacity:0;animation:fade 2s forwards 4s">Đồng hành cùng Bob khai phá tương lai</p>
-<button id="startBtn">🚀 BẮT ĐẦU HÀNH TRÌNH</button>
+<div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
+<div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
+<div class="hero">
+<h1>🦈 BOBSHARK AI</h1>
+<p>Đồng hành cùng Bob khai phá tương lai</p>
+<button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
+</div>
 </div>
 
-<div id="app" style="display:none">
+<div id="register" class="hidden">
+<div class="card">
+<h2>Tạo tài khoản</h2>
+<input id="regName" placeholder="Họ và tên">
+<input id="regUser" placeholder="Tên đăng nhập">
+<input id="regPass" type="password" placeholder="Mật khẩu">
+<input id="birth" type="date">
+<button class="btn" onclick="register()">Tạo tài khoản</button>
+</div>
+</div>
+
+<div id="app" class="hidden">
 <div class="card">
 <h1>🦈 BobShark AI</h1>
-<p>Khám phá nghề nghiệp tương lai</p>
+<p id="welcome"></p>
+<p id="today"></p>
+<p id="stars"></p>
 </div>
 
 <div class="card">
-<h2>Thông tin cá nhân</h2>
-<input id="name" placeholder="Nhập họ tên">
-<select id="interest">
-<option>Công nghệ</option>
-<option>Y tế</option>
-<option>Kinh doanh</option>
-<option>Thiết kế</option>
-<option>Giáo dục</option>
+<h2>🎯 Phân tích nghề nghiệp</h2>
+<select id="job">
+<option>AI Engineer</option>
+<option>Lập trình viên</option>
+<option>Bác sĩ</option>
+<option>Marketing</option>
+<option>Giáo viên</option>
 </select>
-<button onclick="analyze()">Phân tích nghề nghiệp</button>
-<div id="result"></div>
+<button class="btn" onclick="analyze()">Phân tích</button>
+<div id="analysis"></div>
 </div>
 
 <div class="card">
 <h2>📅 Hành trình 7 ngày</h2>
-<div class="days" id="days"></div>
+<div id="days" class="days"></div>
 </div>
 
 <div class="card">
 <h2>🎁 Gacha</h2>
-<button onclick="openGacha()">Mở Gacha</button>
+<button class="btn" onclick="openGacha()">Mở Gacha</button>
 </div>
 </div>
 
 <div class="modal" id="modal">
 <div class="modal-content">
-<h2>🦈 BobShark</h2>
-<p>Tính năng Gacha hiện đang bảo trì 🚧<br>Hãy tiếp tục hoàn thành nhiệm vụ để tích lũy sao nhé ⭐</p>
-<button onclick="closeGacha()">Đã hiểu</button>
+<h2>🚧 Gacha bảo trì</h2>
+<p>Tính năng đang được nâng cấp.</p>
+<button class="btn" onclick="closeGacha()">Đã hiểu</button>
+</div>
+</div>
+
+<div class="modal" id="taskModal">
+<div class="modal-content">
+<h2 id="taskTitle"></h2>
+<p id="taskText"></p>
+<button class="btn" onclick="completeTask()">Hoàn thành nhiệm vụ</button>
 </div>
 </div>
 
 <script>
-const canvas=document.getElementById('ocean');
-const ctx=canvas.getContext('2d');
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
-resize();window.onresize=resize;
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-for(let x=0;x<canvas.width;x+=10){
-let y=Math.sin((x+Date.now()/20)/40)*10+canvas.height*0.7;
-ctx.fillStyle='rgba(0,200,255,.5)';
-ctx.fillRect(x,y,10,canvas.height-y);
-}
-requestAnimationFrame(draw);
-}
-draw();
+const tasks=[
+"Khám phá bản thân",
+"Tìm hiểu ngành CNTT",
+"Tìm hiểu ngành Y",
+"Khám phá Marketing",
+"Khám phá kỹ năng mềm",
+"Tìm hiểu trường đại học",
+"Tổng kết hành trình"
+];
 
-document.getElementById('startBtn').onclick=()=>{
-document.getElementById('intro').style.display='none';
-document.getElementById('app').style.display='block';
-};
+async function getInternetDate(){
+ try{
+  const r=await fetch('https://worldtimeapi.org/api/timezone/Asia/Ho_Chi_Minh');
+  const d=await r.json();
+  return new Date(d.datetime);
+ }catch(e){return new Date();}
+}
 
-const careerMap={
-"Công nghệ":"CNTT - Lập trình viên, AI Engineer",
-"Y tế":"Bác sĩ, Điều dưỡng",
-"Kinh doanh":"Marketing, Quản trị kinh doanh",
-"Thiết kế":"Thiết kế đồ họa, UI/UX",
-"Giáo dục":"Giáo viên, Giảng viên"
-};
+function showRegister(){
+ document.getElementById('intro').style.display='none';
+ document.getElementById('register').classList.remove('hidden');
+}
+
+async function register(){
+ const user={
+  name:regName.value,
+  username:regUser.value,
+  password:regPass.value,
+  birth:birth.value,
+  startDate:(await getInternetDate()).toISOString(),
+  stars:0,
+  progress:[false,false,false,false,false,false,false]
+ };
+ localStorage.setItem('bobUser',JSON.stringify(user));
+ loadApp();
+}
+
+async function loadApp(){
+ let user=JSON.parse(localStorage.getItem('bobUser'));
+ if(!user) return;
+ register.classList.add('hidden');
+ app.classList.remove('hidden');
+
+ const now=await getInternetDate();
+ welcome.innerText='Xin chào '+user.name+' 👋';
+ today.innerText='📅 '+now.toLocaleDateString('vi-VN');
+ stars.innerText='⭐ Sao: '+user.stars;
+
+ renderDays();
+}
+
+async function getUnlockedDay(){
+ let user=JSON.parse(localStorage.getItem('bobUser'));
+ const start=new Date(user.startDate);
+ const now=await getInternetDate();
+ return Math.min(Math.floor((now-start)/(1000*60*60*24))+1,7);
+}
+
+async function renderDays(){
+ let user=JSON.parse(localStorage.getItem('bobUser'));
+ let unlocked=await getUnlockedDay();
+ days.innerHTML='';
+
+ for(let i=0;i<7;i++){
+   let d=document.createElement('div');
+
+   if(user.progress[i]){
+      d.className='day done';
+      d.innerHTML='Ngày '+(i+1)+'<br>✅ Đã hoàn thành';
+   }else if(i+1<=unlocked){
+      d.className='day';
+      d.innerHTML='Ngày '+(i+1);
+      d.onclick=()=>openTask(i);
+   }else{
+      d.className='day locked';
+      d.innerHTML='🔒 Ngày '+(i+1);
+   }
+
+   days.appendChild(d);
+ }
+}
+
+let currentTask=0;
+
+function openTask(i){
+ currentTask=i;
+ taskTitle.innerText='Nhiệm vụ ngày '+(i+1);
+ taskText.innerText=tasks[i];
+ taskModal.style.display='flex';
+}
+
+function completeTask(){
+ let user=JSON.parse(localStorage.getItem('bobUser'));
+ if(!user.progress[currentTask]){
+   user.progress[currentTask]=true;
+   user.stars+=50;
+ }
+ localStorage.setItem('bobUser',JSON.stringify(user));
+ taskModal.style.display='none';
+ renderDays();
+ loadApp();
+
+ if(user.progress.every(v=>v)){
+   alert('🎉 Chúc mừng bạn đã hoàn thành 7 ngày!');
+ }
+}
 
 function analyze(){
-const name=document.getElementById('name').value;
-const interest=document.getElementById('interest').value;
-if(!name){alert('Nhập họ tên');return;}
-localStorage.setItem('bob_name',name);
-document.getElementById('result').innerHTML=
-`<h3>Xin chào ${name}</h3>
-<p>Ngành phù hợp: <b>${careerMap[interest]}</b></p>
-<p>Mức độ phù hợp: ${90+Math.floor(Math.random()*10)}%</p>`;
+ let user=JSON.parse(localStorage.getItem('bobUser'));
+ let job=document.getElementById('job').value;
+ let birth=new Date(user.birth);
+ let score=70+Math.floor(Math.random()*30);
+ analysis.innerHTML=`<h3>${job}</h3><p>Độ phù hợp: <b>${score}%</b></p><p>Ngày sinh: ${birth.toLocaleDateString('vi-VN')}</p>`;
 }
 
-const days=document.getElementById('days');
-for(let i=1;i<=7;i++){
-let d=document.createElement('div');
-d.className='day';
-d.innerHTML='Ngày '+i;
-d.onclick=()=>d.classList.toggle('done');
-days.appendChild(d);
-}
+function openGacha(){modal.style.display='flex'}
+function closeGacha(){modal.style.display='none'}
 
-function openGacha(){document.getElementById('modal').style.display='flex';}
-function closeGacha(){document.getElementById('modal').style.display='none';}
+window.onload=()=>{
+ if(localStorage.getItem('bobUser')) loadApp();
+}
 </script>
 </body>
 </html>
