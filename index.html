@@ -3,221 +3,259 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BobShark MVP Pro</title>
+<title>BobShark Firebase</title>
+
 <style>
-body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
-.hidden{display:none}
-.center{display:flex;justify-content:center;align-items:center}
-#intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
-.fish{position:absolute;font-size:28px;animation:swim 12s linear infinite}
-@keyframes swim{from{left:-20%}to{left:120%}}
-.hero{position:absolute;top:40%;width:100%;text-align:center}
-.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer}
-.card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
-input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
-.day{padding:15px;border-radius:10px;text-align:center;background:#2563eb;cursor:pointer}
-.locked{background:#555}
-.done{background:#16a34a}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
-.modal-content{background:#fff;color:#000;padding:20px;border-radius:15px;max-width:500px}
+body{
+    background:#0b3d91;
+    font-family:Arial,sans-serif;
+    color:white;
+    margin:0;
+}
+
+.container{
+    width:90%;
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:rgba(255,255,255,0.12);
+    padding:20px;
+    border-radius:15px;
+    margin-top:20px;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+}
+
+button{
+    margin-top:10px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#2d7fff;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1f65d6;
+}
+
+.hidden{
+    display:none;
+}
 </style>
 </head>
+
 <body>
 
-<div id="intro">
-<div class="fish" style="top:20%">🐟🐟🐟</div>
-<div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
-<div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
-<div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
-<div class="hero">
-<h1>🦈 BOBSHARK AI</h1>
-<p>Đồng hành cùng Bob khai phá tương lai</p>
-<button class="btn" onclick="showRegister()">🚀 Bắt đầu hành trình</button>
-</div>
-</div>
+<div class="container">
 
-<div id="register" class="hidden">
-<div class="card">
-<h2>Tạo tài khoản</h2>
-<input id="regName" placeholder="Họ và tên">
-<input id="regUser" placeholder="Tên đăng nhập">
-<input id="regPass" type="password" placeholder="Mật khẩu">
-<input id="birth" type="date">
-<button class="btn" onclick="register()">Tạo tài khoản</button>
-</div>
-</div>
-
-<div id="app" class="hidden">
-<div class="card">
 <h1>🦈 BobShark AI</h1>
-<p id="welcome"></p>
-<p id="today"></p>
-<p id="stars"></p>
-</div>
 
 <div class="card">
-<h2>🎯 Phân tích nghề nghiệp</h2>
-<select id="job">
+
+<h2>Tạo tài khoản</h2>
+
+<input id="name" placeholder="Họ và tên">
+
+<input id="birth" type="date">
+
+<select id="career">
+<option>CNTT</option>
 <option>AI Engineer</option>
-<option>Lập trình viên</option>
 <option>Bác sĩ</option>
-<option>Marketing</option>
 <option>Giáo viên</option>
+<option>Kỹ sư</option>
 </select>
-<button class="btn" onclick="analyze()">Phân tích</button>
-<div id="analysis"></div>
+
+<input id="email" type="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Mật khẩu">
+
+<button onclick="register()">Đăng ký</button>
+
+<hr>
+
+<h2>Đăng nhập</h2>
+
+<input id="loginEmail" type="email" placeholder="Email">
+
+<input id="loginPassword" type="password" placeholder="Mật khẩu">
+
+<button onclick="login()">Đăng nhập</button>
+
 </div>
 
-<div class="card">
-<h2>📅 Hành trình 7 ngày</h2>
-<div id="days" class="days"></div>
+<div id="dashboard" class="card hidden">
+
+<h2>Xin chào <span id="userName"></span></h2>
+
+<p>Email: <span id="userEmail"></span></p>
+
+<p>Ngày sinh: <span id="userBirth"></span></p>
+
+<p>Nghề mong muốn: <span id="userCareer"></span></p>
+
+<p>⭐ Sao: <span id="userStars"></span></p>
+
 </div>
 
-<div class="card">
-<h2>🎁 Gacha</h2>
-<button class="btn" onclick="openGacha()">Mở Gacha</button>
-</div>
 </div>
 
-<div class="modal" id="modal">
-<div class="modal-content">
-<h2>🚧 Gacha bảo trì</h2>
-<p>Tính năng đang được nâng cấp.</p>
-<button class="btn" onclick="closeGacha()">Đã hiểu</button>
-</div>
-</div>
+<script type="module">
 
-<div class="modal" id="taskModal">
-<div class="modal-content">
-<h2 id="taskTitle"></h2>
-<p id="taskText"></p>
-<button class="btn" onclick="completeTask()">Hoàn thành nhiệm vụ</button>
-</div>
-</div>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
-<script>
-const tasks=[
-"Khám phá bản thân",
-"Tìm hiểu ngành CNTT",
-"Tìm hiểu ngành Y",
-"Khám phá Marketing",
-"Khám phá kỹ năng mềm",
-"Tìm hiểu trường đại học",
-"Tổng kết hành trình"
-];
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-async function getInternetDate(){
- try{
-  const r=await fetch('https://worldtimeapi.org/api/timezone/Asia/Ho_Chi_Minh');
-  const d=await r.json();
-  return new Date(d.datetime);
- }catch(e){return new Date();}
+import {
+getFirestore,
+doc,
+setDoc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
+authDomain: "bobshark-fbdfb.firebaseapp.com",
+projectId: "bobshark-fbdfb",
+storageBucket: "bobshark-fbdfb.firebasestorage.app",
+messagingSenderId: "810024180746",
+appId: "1:810024180746:web:4419819dff374b5a04d3f3",
+measurementId: "G-3G7YCWW9JZ"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+window.register = async function(){
+
+try{
+
+const name = document.getElementById("name").value;
+const birth = document.getElementById("birth").value;
+const career = document.getElementById("career").value;
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+const uid = userCredential.user.uid;
+
+await setDoc(doc(db,"users",uid),{
+
+name:name,
+birth:birth,
+career:career,
+email:email,
+
+stars:0,
+
+registerDate:new Date().toISOString(),
+
+progress:{
+day1:false,
+day2:false,
+day3:false,
+day4:false,
+day5:false,
+day6:false,
+day7:false
 }
 
-function showRegister(){
- document.getElementById('intro').style.display='none';
- document.getElementById('register').classList.remove('hidden');
+});
+
+alert("Đăng ký thành công");
+
+}
+catch(error){
+
+alert(error.message);
+
 }
 
-async function register(){
- const user={
-  name:regName.value,
-  username:regUser.value,
-  password:regPass.value,
-  birth:birth.value,
-  startDate:(await getInternetDate()).toISOString(),
-  stars:0,
-  progress:[false,false,false,false,false,false,false]
- };
- localStorage.setItem('bobUser',JSON.stringify(user));
- loadApp();
 }
 
-async function loadApp(){
- let user=JSON.parse(localStorage.getItem('bobUser'));
- if(!user) return;
- register.classList.add('hidden');
- app.classList.remove('hidden');
+window.login = async function(){
 
- const now=await getInternetDate();
- welcome.innerText='Xin chào '+user.name+' 👋';
- today.innerText='📅 '+now.toLocaleDateString('vi-VN');
- stars.innerText='⭐ Sao: '+user.stars;
+try{
 
- renderDays();
+const email =
+document.getElementById("loginEmail").value;
+
+const password =
+document.getElementById("loginPassword").value;
+
+const userCredential =
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+const uid =
+userCredential.user.uid;
+
+const docRef =
+doc(db,"users",uid);
+
+const snap =
+await getDoc(docRef);
+
+const data =
+snap.data();
+
+document.getElementById("dashboard")
+.classList.remove("hidden");
+
+document.getElementById("userName")
+.innerText=data.name;
+
+document.getElementById("userEmail")
+.innerText=data.email;
+
+document.getElementById("userBirth")
+.innerText=data.birth;
+
+document.getElementById("userCareer")
+.innerText=data.career;
+
+document.getElementById("userStars")
+.innerText=data.stars;
+
+alert("Đăng nhập thành công");
+
+}
+catch(error){
+
+alert(error.message);
+
 }
 
-async function getUnlockedDay(){
- let user=JSON.parse(localStorage.getItem('bobUser'));
- const start=new Date(user.startDate);
- const now=await getInternetDate();
- return Math.min(Math.floor((now-start)/(1000*60*60*24))+1,7);
 }
 
-async function renderDays(){
- let user=JSON.parse(localStorage.getItem('bobUser'));
- let unlocked=await getUnlockedDay();
- days.innerHTML='';
-
- for(let i=0;i<7;i++){
-   let d=document.createElement('div');
-
-   if(user.progress[i]){
-      d.className='day done';
-      d.innerHTML='Ngày '+(i+1)+'<br>✅ Đã hoàn thành';
-   }else if(i+1<=unlocked){
-      d.className='day';
-      d.innerHTML='Ngày '+(i+1);
-      d.onclick=()=>openTask(i);
-   }else{
-      d.className='day locked';
-      d.innerHTML='🔒 Ngày '+(i+1);
-   }
-
-   days.appendChild(d);
- }
-}
-
-let currentTask=0;
-
-function openTask(i){
- currentTask=i;
- taskTitle.innerText='Nhiệm vụ ngày '+(i+1);
- taskText.innerText=tasks[i];
- taskModal.style.display='flex';
-}
-
-function completeTask(){
- let user=JSON.parse(localStorage.getItem('bobUser'));
- if(!user.progress[currentTask]){
-   user.progress[currentTask]=true;
-   user.stars+=50;
- }
- localStorage.setItem('bobUser',JSON.stringify(user));
- taskModal.style.display='none';
- renderDays();
- loadApp();
-
- if(user.progress.every(v=>v)){
-   alert('🎉 Chúc mừng bạn đã hoàn thành 7 ngày!');
- }
-}
-
-function analyze(){
- let user=JSON.parse(localStorage.getItem('bobUser'));
- let job=document.getElementById('job').value;
- let birth=new Date(user.birth);
- let score=70+Math.floor(Math.random()*30);
- analysis.innerHTML=`<h3>${job}</h3><p>Độ phù hợp: <b>${score}%</b></p><p>Ngày sinh: ${birth.toLocaleDateString('vi-VN')}</p>`;
-}
-
-function openGacha(){modal.style.display='flex'}
-function closeGacha(){modal.style.display='none'}
-
-window.onload=()=>{
- if(localStorage.getItem('bobUser')) loadApp();
-}
 </script>
+
 </body>
 </html>
