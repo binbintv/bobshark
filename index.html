@@ -11,7 +11,7 @@ body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,
 .fish{position:absolute;font-size:28px;animation:swim 12s linear infinite}
 @keyframes swim{from{left:-20%}to{left:120%}}
 .hero{position:absolute;top:40%;width:100%;text-align:center}
-.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000;font-size:18px}
+.btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000}
 .card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
@@ -30,6 +30,11 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .toggle-password {position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;}
 .footer{text-align:center;padding:15px;font-size:13px;opacity:0.8;margin-top:20px}
 .footer i{font-style:italic}
+.logout-btn {
+    background:#ef4444;
+    color:white;
+    float:right;
+}
 </style>
 </head>
 <body>
@@ -47,6 +52,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </div>
 
 <div id="authPage" class="hidden">
+    <!-- Phần auth giữ nguyên -->
     <div class="card">
         <div class="tabs">
             <button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
@@ -97,10 +103,12 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 <div id="app" class="hidden">
     <div class="card">
         <h1>🦈 BobShark AI</h1>
+        <button class="btn logout-btn" onclick="logoutUser()">Đăng xuất</button>
         <p id="welcome"></p>
         <p id="today"></p>
         <p id="stars"></p>
     </div>
+
     <div class="card">
         <h2>🎯 Phân tích nghề nghiệp</h2>
         <select id="job">
@@ -113,10 +121,12 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
         <button class="btn" onclick="analyze()">Phân tích</button>
         <div id="analysis"></div>
     </div>
+
     <div class="card">
         <h2>📅 Hành trình 7 ngày</h2>
         <div id="days" class="days"></div>
     </div>
+
     <div class="card">
         <h2>🎁 Gacha</h2>
         <button class="btn" onclick="openGacha()">Mở Gacha</button>
@@ -226,8 +236,15 @@ async function loadApp(){
     document.getElementById('stars').innerText = `⭐ Sao: ${user.stars}`;
 }
 
-function openGacha(){ document.getElementById('modal').style.display = 'flex'; }
-function closeGacha(){ document.getElementById('modal').style.display = 'none'; }
+function logoutUser(){
+    if(confirm("Bạn có chắc muốn đăng xuất?")){
+        localStorage.removeItem('bobUser');
+        location.reload();
+    }
+}
+
+function openGacha(){ document.getElementById('modal').style.display='flex'; }
+function closeGacha(){ document.getElementById('modal').style.display='none'; }
 
 window.onload = () => {
     if(localStorage.getItem('bobUser')) loadApp();
