@@ -8,8 +8,6 @@
 body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);color:#fff}
 .hidden{display:none}
 #intro{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#001d3d,#003566,#0077b6);overflow:hidden}
-.fish{position:absolute;font-size:28px;animation:swim 12s linear infinite}
-@keyframes swim{from{left:-20%}to{left:120%}}
 .hero{position:absolute;top:40%;width:100%;text-align:center}
 .btn{padding:12px 24px;border:none;border-radius:12px;background:#ffd60a;font-weight:bold;cursor:pointer;color:#000}
 .card{max-width:1000px;margin:20px auto;background:rgba(255,255,255,.12);padding:20px;border-radius:16px}
@@ -55,21 +53,34 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </head>
 <body>
 <div id="adminBadge"
-style="display:none;
-background:red;
+style="
+display:none;
+position:fixed;
+top:15px;
+right:15px;
+background:#ef4444;
 color:white;
-padding:8px 15px;
+padding:10px 18px;
 border-radius:20px;
 font-weight:bold;
-float:right;">
+z-index:99999;
+">
 👑 ADMIN
 </div>
 <div id="intro">
-    <div class="fish" style="top:20%">🐟🐟🐟</div>
-    <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
-    <div class="fish" style="top:70%;animation-delay:4s">🐟🐟</div>
-    <div style="position:absolute;top:25%;left:10%;font-size:80px;animation:swim 8s linear">🐬</div>
-    <div class="hero">
+    <video id="introVideo"
+autoplay
+muted
+playsinline
+style="
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+">
+<source src="intro.mp4" type="video/mp4">
+</video>
+    <div class="hero" id="heroContent" style="display:none;">
         <h1>🦈 BOBSHARK</h1>
 
         <p>Đồng hành cùng Bob khai phá tương lai</p>
@@ -381,6 +392,13 @@ window.onload = () => {
         }
 
     });
+
+    document.getElementById("introVideo").onended = function(){
+
+        document.getElementById("heroContent")
+        .style.display = "block";
+
+    };
 
 };
 </script>
