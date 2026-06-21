@@ -16,8 +16,8 @@ body{margin:0;font-family:Segoe UI,sans-serif;background:linear-gradient(180deg,
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
 .day{padding:15px;border-radius:10px;text-align:center;background:#2563eb;cursor:pointer}
-.locked{background:#555}
-.done{background:#16a34a}
+.locked{background:#555 !important}
+.done{background:#16a34a !important}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center;z-index:10000}
 .modal-content{background:#fff;color:#000;padding:25px;border-radius:15px;max-width:500px;width:90%}
 .tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
@@ -25,17 +25,8 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .tab.active{background:#ffd60a;color:#000}
 .auth-content{display:none}
 .active-auth{display:block}
-
-.footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 14px;
-    opacity: 0.8;
-    margin-top: 30px;
-}
-.footer i {
-    font-style: italic;
-}
+.footer{text-align:center;padding:20px;font-size:14px;opacity:0.8;margin-top:30px}
+.footer i{font-style:italic}
 </style>
 </head>
 <body>
@@ -83,171 +74,4 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
         <div id="adminLoginBox" class="auth-content">
             <div class="card">
                 <h2>👑 Đăng nhập Admin</h2>
-                <input id="adminLoginUser" placeholder="Tên đăng nhập Admin">
-                <input id="adminLoginPass" type="password" placeholder="Mật khẩu Admin">
-                <button class="btn" onclick="loginAdmin()">Đăng nhập Admin</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="app" class="hidden">
-    <div class="card">
-        <h1>🦈 BobShark AI</h1>
-        <p id="welcome"></p>
-        <p id="today"></p>
-        <p id="stars"></p>
-    </div>
-    <div class="card">
-        <h2>🎯 Phân tích nghề nghiệp</h2>
-        <select id="job">
-            <option>AI Engineer</option>
-            <option>Lập trình viên</option>
-            <option>Bác sĩ</option>
-            <option>Marketing</option>
-            <option>Giáo viên</option>
-        </select>
-        <button class="btn" onclick="analyze()">Phân tích</button>
-        <div id="analysis"></div>
-    </div>
-    <div class="card">
-        <h2>📅 Hành trình 7 ngày</h2>
-        <div id="days" class="days"></div>
-    </div>
-    <div class="card">
-        <h2>🎁 Gacha</h2>
-        <button class="btn" onclick="openGacha()">Mở Gacha</button>
-    </div>
-</div>
-
-<!-- Modals -->
-<div class="modal" id="modal">
-    <div class="modal-content">
-        <h2>🚧 Gacha bảo trì</h2>
-        <p>Tính năng đang được nâng cấp.</p>
-        <button class="btn" onclick="closeGacha()">Đã hiểu</button>
-    </div>
-</div>
-
-<div class="modal" id="taskModal">
-    <div class="modal-content">
-        <h2 id="taskTitle"></h2>
-        <p id="taskText"></p>
-        <button class="btn" onclick="completeTask()">Hoàn thành nhiệm vụ</button>
-    </div>
-</div>
-
-<!-- Footer -->
-<footer class="footer">
-    <p>Liên hệ Admin: <strong>admin@bobshark.vn</strong> | Hotline: 0123 456 789</p>
-    <p><i>Made by Team Siêu Quậy</i></p>
-</footer>
-
-<script>
-const tasks = ["Khám phá bản thân","Tìm hiểu ngành CNTT","Tìm hiểu ngành Y","Khám phá Marketing","Khám phá kỹ năng mềm","Tìm hiểu trường đại học","Tổng kết hành trình"];
-
-async function getInternetDate(){
-    try{
-        const r = await fetch('https://worldtimeapi.org/api/timezone/Asia/Ho_Chi_Minh');
-        const d = await r.json();
-        return new Date(d.datetime);
-    }catch(e){return new Date();}
-}
-
-function showRegister(){
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('authPage').classList.remove('hidden');
-}
-
-function showAuth(id, btn){
-    document.querySelectorAll('.auth-content').forEach(x => x.classList.remove('active-auth'));
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    document.getElementById(id).classList.add('active-auth');
-    btn.classList.add('active');
-}
-
-// ====================== USER ======================
-async function register(){
-    const name = document.getElementById('regName').value.trim();
-    const username = document.getElementById('regUser').value.trim();
-    const password = document.getElementById('regPass').value.trim();
-    const birth = document.getElementById('birth').value;
-
-    if(!username || !password){
-        alert("Vui lòng nhập tên đăng nhập và mật khẩu!");
-        return;
-    }
-
-    const user = {
-        name: name || "Bob",
-        username: username,
-        password: password,
-        birth: birth,
-        startDate: (await getInternetDate()).toISOString(),
-        stars: 0,
-        progress: [false,false,false,false,false,false,false]
-    };
-
-    let users = JSON.parse(localStorage.getItem('bobUsers') || '[]');
-    users.push(user);
-    localStorage.setItem('bobUsers', JSON.stringify(users));
-
-    localStorage.setItem('bobUser', JSON.stringify(user));
-
-    alert("✅ Đăng ký thành công! Chào mừng bạn đến với BobShark.");
-    loadApp();
-}
-
-function fakeLogin(){
-    const username = document.getElementById('loginUser').value.trim();
-    const password = document.getElementById('loginPass').value.trim();
-    const u = JSON.parse(localStorage.getItem('bobUser') || 'null');
-
-    if(!u || username !== u.username || password !== u.password){
-        alert('Sai tài khoản hoặc mật khẩu!');
-        return;
-    }
-    loadApp();
-}
-
-// ====================== ADMIN ======================
-function loginAdmin(){
-    const username = document.getElementById('adminLoginUser').value.trim();
-    const password = document.getElementById('adminLoginPass').value.trim();
-
-    let admins = JSON.parse(localStorage.getItem('bobAdmins') || '[]');
-    const admin = admins.find(a => a.username === username && a.password === password);
-
-    if(admin){
-        localStorage.setItem('currentAdmin', JSON.stringify(admin));
-        window.location.href = 'admin.html';
-    } else {
-        alert('❌ Sai thông tin Admin');
-    }
-}
-
-async function loadApp(){
-    const user = JSON.parse(localStorage.getItem('bobUser'));
-    if(!user) return;
-
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('authPage').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-
-    const now = await getInternetDate();
-    document.getElementById('welcome').innerText = `Xin chào ${user.name} 👋`;
-    document.getElementById('today').innerText = `📅 ${now.toLocaleDateString('vi-VN')}`;
-    document.getElementById('stars').innerText = `⭐ Sao: ${user.stars}`;
-}
-
-function openGacha(){ document.getElementById('modal').style.display = 'flex'; }
-function closeGacha(){ document.getElementById('modal').style.display = 'none'; }
-
-window.onload = () => {
-    if(localStorage.getItem('bobUser')){
-        loadApp();
-    }
-};
-</script>
-</body>
-</html>
+                <input id="adminLoginUser"
