@@ -63,24 +63,37 @@
         background:rgba(255,255,255,.12);
         padding:25px;
         border-radius:16px;
+        box-sizing: border-box;
     }
     input,select{
         width:100%;
+        max-width:100%;
         padding:12px;
         margin:10px 0;
         border-radius:8px;
         border:none;
         font-size:16px;
+        box-sizing: border-box;
     }
-    .password-container { position: relative; }
-    .password-container input{padding-right:45px;}
+    .password-container { 
+        position: relative; 
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .password-container input{
+        width: 100%;
+        padding-right: 50px;
+        box-sizing: border-box;
+    }
     .toggle-password{
         position:absolute;
-        right:12px;
+        right:15px;
         top:50%;
         transform:translateY(-50%);
         cursor:pointer;
         font-size:18px;
+        z-index: 10;
     }
     .tabs{display:flex;gap:10px;margin-bottom:20px}
     .tab{
@@ -222,11 +235,10 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ==================== NAVIGATION ====================
+// Navigation
 function goToAuth(){
     document.getElementById('intro').style.display = 'none';
     document.getElementById('authPage').classList.remove('hidden');
-    document.getElementById('app').classList.add('hidden');
 }
 
 function showAuth(id, btn){
@@ -247,7 +259,7 @@ function togglePassword(inputId, icon){
     }
 }
 
-// ==================== AUTH FUNCTIONS ====================
+// Auth Functions
 async function registerWithFirebase(){
     const email = document.getElementById('regEmail').value.trim();
     const password = document.getElementById('regPass').value.trim();
@@ -268,9 +280,7 @@ async function registerWithFirebase(){
         });
         alert("✅ Đăng ký thành công!");
         loadApp();
-    } catch(e) {
-        alert("Lỗi đăng ký: " + e.message);
-    }
+    } catch(e) { alert("Lỗi: " + e.message); }
 }
 
 async function loginWithFirebase(){
@@ -281,9 +291,7 @@ async function loginWithFirebase(){
         );
         alert("✅ Đăng nhập thành công!");
         loadApp();
-    } catch(e) {
-        alert("Sai email hoặc mật khẩu!");
-    }
+    } catch(e) { alert("Sai email hoặc mật khẩu!"); }
 }
 
 async function loadApp(){
@@ -323,7 +331,6 @@ function startJourney(){
     window.location.href = "trangchu.html";
 }
 
-// Forgot Password
 function openForgotModal(){ document.getElementById("forgotModal").style.display = "flex"; }
 function closeForgotModal(){ document.getElementById("forgotModal").style.display = "none"; }
 async function sendResetEmail(){
@@ -333,26 +340,19 @@ async function sendResetEmail(){
         await auth.sendPasswordResetEmail(email);
         alert("📧 Đã gửi link đặt lại mật khẩu!");
         closeForgotModal();
-    }catch(error){
-        alert("Lỗi: " + error.message);
-    }
+    }catch(error){ alert("Lỗi: " + error.message); }
 }
 
-// ==================== INIT ====================
+// Init
 window.onload = () => {
     auth.onAuthStateChanged(user => {
-        if(user){
-            loadApp();
-        } else {
-            document.getElementById('intro').style.display = 'block';
-        }
+        if(user) loadApp();
+        else document.getElementById('intro').style.display = 'block';
     });
 
     const video = document.getElementById("introVideo");
     if(video){
-        video.onended = () => {
-            document.getElementById("heroContent").style.display = "block";
-        };
+        video.onended = () => document.getElementById("heroContent").style.display = "block";
     }
 };
 </script>
