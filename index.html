@@ -40,6 +40,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </style>
 </head>
 <body>
+
 <div id="intro">
 <div class="fish" style="top:20%">🐟🐟🐟</div>
 <div class="fish" style="top:45%;animation-delay:2s">🐟🐟🐟🐟</div>
@@ -156,6 +157,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
 
 <script>
+// Khởi tạo Firebase đúng cách
 const firebaseConfig = {
     apiKey: "AIzaSyDGX-qWZTPgOszBO-Mem4wKwh-HpMACPUk",
     authDomain: "bobshark-fbdfb.firebaseapp.com",
@@ -193,7 +195,7 @@ function togglePassword(inputId, icon){
     }
 }
 
-// ================== CHỈ SỬA PHẦN NÀY: LƯU CLOUD ==================
+// Đăng ký với Firebase
 async function register(){
     const name = document.getElementById('regName').value.trim();
     const username = document.getElementById('regUser').value.trim();
@@ -217,24 +219,19 @@ async function register(){
     };
 
     try {
-        await db.collection("users").add(user);   // Lưu lên Cloud
+        await db.collection("users").add(user);
         localStorage.setItem('bobUser', JSON.stringify(user));
         alert("✅ Đăng ký thành công! Dữ liệu đã lưu online.");
         loadApp();
     } catch(e) {
-        alert("Lỗi kết nối Firebase: " + e.message);
+        alert("Lỗi kết nối: " + e.message);
     }
 }
 
-// Các hàm cũ giữ nguyên hoàn toàn
 function fakeLogin(){ /* code cũ của bạn */ }
 function loginAdmin(){ /* code cũ */ }
 async function loadApp(){ /* code cũ */ }
 async function renderDays(){ /* code cũ */ }
-async function getUnlockedDay(){ /* code cũ */ }
-let currentTask = 0;
-function openTask(i){ /* code cũ */ }
-function completeTask(){ /* code cũ */ }
 function analyze(){ /* code cũ */ }
 function openGacha(){ document.getElementById('modal').style.display='flex'; }
 function closeGacha(){ document.getElementById('modal').style.display='none'; }
