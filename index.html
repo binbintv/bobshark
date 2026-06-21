@@ -21,6 +21,16 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 .done{background:#16a34a}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
 .modal-content{background:#fff;color:#000;padding:20px;border-radius:15px;max-width:500px}
+
+.tabs{display:flex;gap:10px;margin-bottom:20px}
+.tab{flex:1;padding:12px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.15);color:#fff;font-weight:bold}
+.tab.active{background:#ffd60a;color:#000}
+.auth-content{display:none}
+.active-auth{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:floatIn .7s ease}
+@keyframes floatIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+
 </style>
 </head>
 <body>
@@ -37,7 +47,15 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 </div>
 </div>
 
-<div id="register" class="hidden">
+
+<div id="authPage" class="hidden">
+<div class="card">
+<div class="tabs">
+<button class="tab active" onclick="showAuth('registerBox',this)">Đăng ký</button>
+<button class="tab" onclick="showAuth('loginBox',this)">Đăng nhập</button>
+</div>
+<div id="registerBox" class="auth-content active-auth">
+
 <div class="card">
 <h2>Tạo tài khoản</h2>
 <input id="regName" placeholder="Họ và tên">
@@ -45,6 +63,15 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
 <input id="regPass" type="password" placeholder="Mật khẩu">
 <input id="birth" type="date">
 <button class="btn" onclick="register()">Tạo tài khoản</button>
+</div>
+
+<div id="loginBox" class="auth-content">
+<h2>Đăng nhập</h2>
+<input id="loginUser" placeholder="Tên đăng nhập">
+<input id="loginPass" type="password" placeholder="Mật khẩu">
+<button class="btn" onclick="fakeLogin()">Đăng nhập</button>
+</div>
+
 </div>
 </div>
 
@@ -130,6 +157,23 @@ function checkAdmin(){
  }
 }
 
+
+function showAuth(id,btn){
+ document.querySelectorAll('.auth-content').forEach(x=>x.classList.remove('active-auth'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active-auth');
+ btn.classList.add('active');
+}
+function fakeLogin(){
+ const u=JSON.parse(localStorage.getItem('bobUser')||'null');
+ if(!u){alert('Chưa có tài khoản');return;}
+ if(loginUser.value===u.username && loginPass.value===u.password){
+   loadApp();
+ }else{
+   alert('Sai tài khoản hoặc mật khẩu');
+ }
+}
+
 const tasks=[
 "Khám phá bản thân",
 "Tìm hiểu ngành CNTT",
@@ -150,7 +194,7 @@ async function getInternetDate(){
 
 function showRegister(){
  document.getElementById('intro').style.display='none';
- document.getElementById('register').classList.remove('hidden');
+ document.getElementById('authPage').classList.remove('hidden');
 }
 
 async function register(){
