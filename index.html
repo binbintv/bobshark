@@ -285,13 +285,9 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 function showRegister(){
-
-    document.getElementById("heroContent").style.display = "none";
-
-    document.getElementById("authPage").classList.remove("hidden");
-
+    document.getElementById('intro').style.display='none';
+    document.getElementById('authPage').classList.remove('hidden');
 }
-
 function showAuth(id, btn){
     document.querySelectorAll('.auth-content').forEach(x => x.classList.remove('active-auth'));
     document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
