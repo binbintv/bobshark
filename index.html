@@ -331,16 +331,55 @@ function startJourney(){
     window.location.href = "trangchu.html";
 }
 
-function openForgotModal(){ document.getElementById("forgotModal").style.display = "flex"; }
-function closeForgotModal(){ document.getElementById("forgotModal").style.display = "none"; }
+// ==================== FIX GỬI EMAIL ====================
+function openForgotModal(){ 
+    document.getElementById("forgotModal").style.display = "flex"; 
+    document.getElementById("forgotEmail").value = document.getElementById("loginEmail").value || "";
+}
+
+function closeForgotModal(){ 
+    document.getElementById("forgotModal").style.display = "none"; 
+}
+
 async function sendResetEmail(){
-    const email = document.getElementById("forgotEmail").value.trim();
-    if(!email) return alert("Vui lòng nhập Email");
-    try{
+    const emailInput = document.getElementById("forgotEmail");
+    const email = emailInput.value.trim();
+    
+    if(!email) {
+        alert("Vui lòng nhập Email!");
+        return;
+    }
+    if(!email.includes("@")) {
+        alert("Email không hợp lệ!");
+        return;
+    }
+
+    try {
+        // Loading state
+        const originalText = emailInput.placeholder;
+        emailInput.placeholder = "Đang gửi...";
+        emailInput.disabled = true;
+
         await auth.sendPasswordResetEmail(email);
-        alert("📧 Đã gửi link đặt lại mật khẩu!");
+        
+        alert("✅ Đã gửi link đặt lại mật khẩu!\n\nVui lòng kiểm tra hộp thư (kể cả thư rác/spam).");
         closeForgotModal();
-    }catch(error){ alert("Lỗi: " + error.message); }
+    } catch(e) {
+        console.error(e);
+        let msg = "Không thể gửi email. ";
+        if(e.code === "auth/user-not-found") {
+            msg += "Email này chưa được đăng ký.";
+        } else if(e.code === "auth/invalid-email") {
+            msg += "Email không hợp lệ.";
+        } else {
+            msg += e.message;
+        }
+        alert("❌ " + msg);
+    } finally {
+        // Reset input
+        document.getElementById("forgotEmail").disabled = false;
+        document.getElementById("forgotEmail").placeholder = "Nhập email của bạn";
+    }
 }
 
 // Init
@@ -362,8 +401,11 @@ window.onload = () => {
     <div style="background:white;color:black;padding:25px;border-radius:15px;width:350px;">
         <h3>Quên mật khẩu</h3>
         <input id="forgotEmail" type="email" placeholder="Nhập email của bạn" style="width:100%;padding:10px;margin:10px 0;">
-        <button class="btn" onclick="sendResetEmail()">📧 Gửi</button>
+        <button class="btn" onclick="sendResetEmail()">📧 Gửi link đặt lại</button>
         <button class="btn" style="background:#ef4444;color:white;" onclick="closeForgotModal()">❌ Hủy</button>
+        <p style="font-size:13px;color:#666;margin-top:10px;">
+            Link sẽ được gửi qua email. Kiểm tra cả thư rác.
+        </p>
     </div>
 </div>
 
